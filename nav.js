@@ -1,7 +1,7 @@
 const NAV = [
-  ["index.html", "智能体", "agent"],
+  ["index.html", "公司", "company"],
   ["world.html", "世界模型", "world"],
-  ["company.html", "公司", "company"],
+  ["agent.html", "智能体", "agent"],
 ];
 
 const current = document.body.dataset.page;

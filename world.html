@@ -10,7 +10,7 @@
 <body data-page="world">
   <main>
     <h1>一条价格，排练成许多可能。</h1>
-    <p class="lede">世界模型把已经发生的价格，排练成许多可能发生的价格。要缩小的是模拟和真实的差距。</p>
+    <p class="lede">世界模型把已经发生的价格拆开，再长成许多还没发生的价格。要缩小的是模拟和真实之间的差距。</p>
 
     <div class="stage">
       <canvas id="market" width="960" height="420" aria-label="价格从一条曲线散开，再收成模拟和真实的差距"></canvas>
@@ -20,9 +20,27 @@
       </div>
     </div>
 
-    <section class="bench">
+    <section class="block">
+      <h2>这五拍</h2>
+      <ol class="steps">
+        <li><b>1</b><span>一条价格。先放下已经发生的那条。</span></li>
+        <li><b>2</b><span>散开。把这条价格拆成许多碎片。</span></li>
+        <li><b>3</b><span>许多可能的价格。碎片再长成还没发生的路径。</span></li>
+        <li><b>4</b><span>真实，和模拟。一条是后来真的发生的，其余是排练出来的。</span></li>
+        <li><b>5</b><span>差距在缩小。两条靠得越近，这场排练越有用。</span></li>
+      </ol>
+    </section>
+
+    <section class="block">
+      <h2>拿来做什么</h2>
+      <p class="prose">一句观点如果只在一条历史上成立，还不够。下单之前，先让它在许多可能的价格里走一遍。</p>
+      <p class="prose">排练看两件事。路径像不像后来的真实。若真按这个仓位去做，成本落在哪里。模拟越靠近真实，智能体给出的仓位越站得住。</p>
+      <p class="prose">世界模型不直接替人下单。它把差距交给下一页的智能体，也交给下面这把尺子。</p>
+    </section>
+
+    <section class="bench block">
       <h2>评测</h2>
-      <p class="lede">评测会开源。这把尺子量三件事。分数还没有公开。</p>
+      <p class="lede">评测会开源。公开的时候，连同题目和量法一起放出来。现在还没有可以核对的分数。</p>
       <table>
         <thead>
           <tr>
@@ -34,22 +52,25 @@
         <tbody>
           <tr>
             <td>路径</td>
-            <td>模拟和真实的差距</td>
+            <td>模拟和后来真实发生的曲线差多远</td>
             <td>即将公开</td>
           </tr>
           <tr>
             <td>执行</td>
-            <td>执行成本</td>
+            <td>若按这个仓位去做，成本是多少</td>
             <td>即将公开</td>
           </tr>
           <tr>
             <td>反事实</td>
-            <td>没发生过的路径</td>
+            <td>没发生的那些路径，有没有被排练到</td>
             <td>即将公开</td>
           </tr>
         </tbody>
       </table>
+      <p class="prose">读表时只看这三列。项目是考什么，量什么是怎么打分，结果是分数。格子里写着即将公开，是因为分数还不能被外人核对。</p>
     </section>
+
+    <p class="next"><a href="agent.html">下一页 · 智能体</a></p>
   </main>
   <footer>DeepAuto Investments</footer>
   <script src="nav.js"></script>

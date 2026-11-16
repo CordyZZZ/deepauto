@@ -3,82 +3,57 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DeepAuto · 智能体</title>
-  <meta name="description" content="说出一句观点，看到一份仓位。确认之后才执行。">
+  <title>DeepAuto · 公司</title>
+  <meta name="description" content="让人用一句话表达投资观点，确认之后才执行。">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body data-page="agent">
+<body data-page="company">
   <main>
-    <h1>说出观点。确认之后才执行。</h1>
-    <p class="lede">一句话进去。预测和优化在黑箱里一起工作，出来的是仓位。</p>
+    <h1>让人用一句话表达投资观点，确认之后才执行。</h1>
+    <p class="lede">背后是一个能排练市场的世界模型。人使用的产品，是智能体。</p>
 
-    <form id="form" class="stage">
-      <label for="view">你的观点</label>
-      <div class="row">
-        <input id="view" name="view" type="text" required placeholder="如果美联储降息，加仓科技龙头">
-        <button type="submit">生成仓位</button>
-      </div>
-      <p class="note">这一版只走到仓位预览，不会下单。</p>
-    </form>
+    <section class="block">
+      <h2>这件事</h2>
+      <p class="prose">有观点的人很多。难的是把一句观点做成仓位，并且在还没发生的价格里先看过它会怎样。</p>
+      <p class="prose">DeepAuto 把这件事分成两层。世界模型负责排练：一条已经发生的价格，长成许多可能的价格，再拿模拟去贴真实。智能体负责使用：你说出观点，预测和优化一起给出仓位。</p>
+      <p class="prose">执行停在确认之后。账户可以接上，但没有你的确认，就不往下走。</p>
+    </section>
 
-    <section id="result" class="machine" hidden aria-live="polite">
-      <p class="quote" id="echo" tabindex="-1"></p>
-      <div class="box">
-        <div class="node" id="pred">预测</div>
-        <div class="flow" id="flow"><i></i></div>
-        <div class="node" id="opt">优化</div>
-        <p class="pno">预测和优化一起训练，直接给出仓位。</p>
-      </div>
-      <dl class="out" id="out" hidden>
-        <dt>方向</dt>
-        <dd>顺着这句观点</dd>
-        <dt>仓位</dt>
-        <dd>一份预览仓位</dd>
-      </dl>
-      <div>
-        <button type="button" id="account" disabled>连接到账户</button>
-        <p class="note">账户还没有接上。这一步只是预览。</p>
+    <section class="block">
+      <h2>按这个顺序看</h2>
+      <div class="cards">
+        <a class="card" href="index.html">
+          <strong>公司</strong>
+          <span>谁在做，以及确认权留在谁手里。</span>
+        </a>
+        <a class="card" href="world.html">
+          <strong>世界模型</strong>
+          <span>一条价格怎样被排练成许多可能，差距怎样缩小。</span>
+        </a>
+        <a class="card" href="agent.html">
+          <strong>智能体</strong>
+          <span>一句话怎样进黑箱，出来成为一份仓位。</span>
+        </a>
       </div>
     </section>
+
+    <section class="block">
+      <h2>人</h2>
+      <p class="prose">六个位子。每人都是一张照片、一个名字、一句和这件事有关的话。</p>
+      <p class="note">内容还没放上来。</p>
+      <section class="people" aria-label="创始人">
+        <article class="seat"><div class="photo">照片</div><h2>名字</h2><p>一句话</p></article>
+        <article class="seat"><div class="photo">照片</div><h2>名字</h2><p>一句话</p></article>
+        <article class="seat"><div class="photo">照片</div><h2>名字</h2><p>一句话</p></article>
+        <article class="seat"><div class="photo">照片</div><h2>名字</h2><p>一句话</p></article>
+        <article class="seat"><div class="photo">照片</div><h2>名字</h2><p>一句话</p></article>
+        <article class="seat"><div class="photo">照片</div><h2>名字</h2><p>一句话</p></article>
+      </section>
+    </section>
+
+    <p class="next"><a href="world.html">下一页 · 世界模型</a></p>
   </main>
   <footer>DeepAuto Investments</footer>
   <script src="nav.js"></script>
-  <script>
-    const form = document.getElementById("form");
-    const result = document.getElementById("result");
-    const echo = document.getElementById("echo");
-    const pred = document.getElementById("pred");
-    const opt = document.getElementById("opt");
-    const flow = document.getElementById("flow");
-    const out = document.getElementById("out");
-    let timer = 0;
-
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const text = document.getElementById("view").value.trim();
-      if (!text) return;
-      window.clearTimeout(timer);
-      echo.textContent = text;
-      pred.classList.remove("on");
-      opt.classList.remove("on");
-      flow.classList.remove("run");
-      out.hidden = true;
-      result.hidden = false;
-      echo.focus();
-
-      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (reduce) {
-        pred.classList.add("on");
-        opt.classList.add("on");
-        out.hidden = false;
-        return;
-      }
-
-      timer = window.setTimeout(() => pred.classList.add("on"), 180);
-      window.setTimeout(() => flow.classList.add("run"), 520);
-      window.setTimeout(() => opt.classList.add("on"), 1100);
-      window.setTimeout(() => { out.hidden = false; }, 1600);
-    });
-  </script>
 </body>
 </html>
