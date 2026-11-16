@@ -3,30 +3,33 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DeepAuto · 伙伴</title>
-  <meta name="description" content="用户的伙伴。一个例子：如果美联储降息，看向科技龙头。确认之后才执行。">
+  <title data-zh="DeepAuto Investments · 智能体" data-en="DeepAuto Investments · Agent">DeepAuto Investments · 智能体</title>
+  <meta name="description" content="用户的智能体。说出观点，确认之后才执行。">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body data-page="partner">
+<body data-page="agent">
   <main>
-    <h1>用户的伙伴<small class="en">Your partner in the market.</small></h1>
-    <p class="lede">一个例子，从头走到确认。<small class="en">One example, followed through to your confirmation.</small></p>
+    <h1 data-zh="用户的智能体" data-en="Your agent">用户的智能体</h1>
+    <p class="lede" data-zh="一个例子，在一台电脑的对话里走完。" data-en="One example, carried through a conversation on a laptop.">一个例子，在一台电脑的对话里走完。</p>
 
-    <div class="stage story">
-      <p class="kicker"><span id="kicker">观点</span><small class="en" id="kicker-en">Your view</small></p>
-      <p class="quote" id="line">如果美联储降息，看向科技龙头。</p>
-      <p class="lede" id="line-en">If the Fed cuts, look to the leading names in technology.</p>
-      <div id="extra"></div>
+    <div class="laptop" aria-hidden="false">
+      <div class="bezel">
+        <div class="cam"></div>
+        <div class="chat" id="chat" aria-live="polite"></div>
+        <div class="composer">
+          <span data-zh="写下你的观点" data-en="Write a view">写下你的观点</span>
+        </div>
+      </div>
+      <div class="chin"></div>
     </div>
 
     <div class="beatrow">
-      <div class="dots" id="dots" role="tablist" aria-label="例子的五步"></div>
-      <button type="button" class="ghost" id="replay">播放<small class="en">Play</small></button>
+      <div class="dots" id="dots" aria-label="例子"></div>
+      <button type="button" class="ghost" id="replay" data-zh="播放" data-en="Play">播放</button>
     </div>
-
-    <p class="next"><a href="world.html">回到世界模型<small class="en">Back to the world model</small></a></p>
   </main>
   <footer>DeepAuto Investments</footer>
+  <script src="lang.js"></script>
   <script src="nav.js"></script>
   <script src="partner.js"></script>
 </body>

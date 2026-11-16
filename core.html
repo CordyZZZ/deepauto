@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-zh="DeepAuto Investments · 核心竞争力" data-en="DeepAuto Investments · Strength">DeepAuto Investments · 核心竞争力</title>
+  <meta name="description" content="基于真实场景的世界模型，以及端到端的优化策略。">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="core">
+  <main>
+    <section id="world">
+      <h1 data-zh="基于真实场景的世界模型" data-en="A world model on real markets">基于真实场景的世界模型</h1>
+      <div class="stage">
+        <canvas id="market" width="960" height="420" aria-label="沪深300日线，可拖动分界，鼠标经过显示价格"></canvas>
+        <p class="tip" id="tip" hidden></p>
+        <div class="beatrow">
+          <div>
+            <p class="beat" id="beat">沪深300</p>
+            <p class="note" id="beat-en"></p>
+          </div>
+          <button type="button" class="ghost" id="replay" data-zh="再看一次" data-en="Replay">再看一次</button>
+        </div>
+        <p class="note" data-zh="日线收盘 · 000300 · 2018.1.2 – 2026.11.16。拖动竖线，移动真实与模拟的分界。" data-en="Daily close · 000300 · 2018.1.2 – 2026.11.16. Drag the line to move the split between real and simulated.">日线收盘 · 000300 · 2018.1.2 – 2026.11.16。拖动竖线，移动真实与模拟的分界。</p>
+      </div>
+      <p class="lede" data-zh="之后会考虑开源。" data-en="Open source, considered later.">之后会考虑开源。</p>
+
+      <div class="block">
+        <h2 data-zh="回测" data-en="Backtest">回测</h2>
+        <p class="lede" data-zh="黄色从最左边铺开，走到哪里，标出哪里的价格。绿色是预测，可以伸过走势的右端。" data-en="Yellow spreads from the left and names the price where it stops. Green is the forecast, and it may run past the last close.">黄色从最左边铺开，走到哪里，标出哪里的价格。绿色是预测，可以伸过走势的右端。</p>
+        <div class="stage">
+          <canvas id="walk" width="960" height="240" aria-label="回测从左侧展开，预测伸过右端"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="strategy">
+      <h2 data-zh="优化为决策服务" data-en="Optimization serves the decision">优化为决策服务</h2>
+      <p class="lede" data-zh="端到端。全线贯通，沿途可学习。从数据走到结果。" data-en="End to end. Learnable the whole way through, from data to result.">端到端。全线贯通，沿途可学习。从数据走到结果。</p>
+
+      <h3 class="diagram-title" data-zh="前向" data-en="Forward">前向</h3>
+      <div class="chain" id="forward"></div>
+
+      <h3 class="diagram-title" data-zh="反传" data-en="The return pass">反传</h3>
+      <p class="note" data-zh="同一组框。光点走过去，再沿决策模型和预测模型走回来。" data-en="The same boxes. The light goes forward, then back through the decision model and the prediction model.">同一组框。光点走过去，再沿决策模型和预测模型走回来。</p>
+      <div class="cycle" id="cycle"></div>
+      <div class="beatrow">
+        <span></span>
+        <button type="button" class="ghost" id="replay-flow" data-zh="再看一次" data-en="Replay">再看一次</button>
+      </div>
+    </section>
+  </main>
+  <footer>DeepAuto Investments</footer>
+  <script src="lang.js"></script>
+  <script src="nav.js"></script>
+  <script src="csi.js"></script>
+  <script src="world.js"></script>
+  <script src="loop.js"></script>
+</body>
+</html>

@@ -2,65 +2,11 @@
 <html lang="zh-Hans">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DeepAuto · 世界模型</title>
-  <meta name="description" content="世界模型对着真实的沪深300排练。浅色是模拟，白色是后来真实发生的走势。">
-  <link rel="stylesheet" href="styles.css">
+  <meta http-equiv="refresh" content="0; url=core.html#world">
+  <title>DeepAuto Investments</title>
+  <script>location.replace("core.html#world");</script>
 </head>
-<body data-page="world">
-  <main>
-    <h1>对着真实的沪深300排练。<small class="en">Rehearsed against the real CSI 300.</small></h1>
-    <p class="lede">竖线左边是已经发生的价格。之后，浅色是模拟，白色是后来的真实走势。<small class="en">Left of the line is what already happened. After it, teal is simulated and white is what actually followed.</small></p>
-
-    <div class="stage">
-      <canvas id="market" width="960" height="420" aria-label="沪深300日线。2026年9月14日之后，模拟路径与后来的真实走势并列。"></canvas>
-      <div class="beatrow">
-        <div>
-          <p class="beat" id="beat">沪深300</p>
-          <p class="note" id="beat-en">CSI 300</p>
-        </div>
-        <button type="button" class="ghost" id="replay">再看一次<small class="en">Replay</small></button>
-      </div>
-      <p class="note">日线收盘 · 000300 · 2026.03.23 – 2026.11.16。浅色是排练，白色是后来的真实收盘。<small class="en">Teal is the rehearsal. White is the close that actually followed.</small></p>
-    </div>
-
-    <section class="bench block">
-      <h2>评测<small class="en">The comparison</small></h2>
-      <p class="lede">对照后来的真实走势，以及真实成交里的成本。<small class="en">Against the path that followed, and the cost in the real fill.</small></p>
-      <table>
-        <thead>
-          <tr>
-            <th>看什么<small class="en">What</small></th>
-            <th>对照<small class="en">Against</small></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>路径<small class="en">Path</small></td>
-            <td>后来真实发生的走势<small class="en">The path that followed</small></td>
-          </tr>
-          <tr>
-            <td>成本<small class="en">Cost</small></td>
-            <td>真实成交里的成本<small class="en">Cost in the real fill</small></td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-
-    <section class="block">
-      <h2>回测<small class="en">Backtest</small></h2>
-      <p class="lede">一套顺着时间往前走的框架。成本在里面，约束在里面。<small class="en">A framework that walks forward in time. Costs in. Constraints in.</small></p>
-      <div class="stage">
-        <canvas id="walk" width="960" height="220" aria-label="回测窗口沿沪深300向前滑动，左边训练，右边检验"></canvas>
-        <p class="note">训练在左，检验在右。窗口一天一天往前移。<small class="en">Train on the left, test on the right. The window steps forward.</small></p>
-      </div>
-    </section>
-
-    <p class="next"><a href="optimize.html">下一页 · 优化策略<small class="en">Next · Strategy</small></a></p>
-  </main>
-  <footer>DeepAuto Investments</footer>
-  <script src="nav.js"></script>
-  <script src="csi.js"></script>
-  <script src="world.js"></script>
+<body>
+  <p><a href="core.html#world">DeepAuto Investments</a></p>
 </body>
 </html>
