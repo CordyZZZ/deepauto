@@ -80,9 +80,9 @@ a { color: inherit; }
 
 .mark {
   font-family: var(--serif);
-  font-size: 2.2rem;
-  line-height: 1.1;
-  max-width: 24rem;
+  font-size: 2.75rem;
+  line-height: 1.05;
+  max-width: 36rem;
   letter-spacing: -0.03em;
   text-decoration: none;
 }
