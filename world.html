@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DeepAuto · 世界模型</title>
+  <meta name="description" content="世界模型把已经发生的价格，排练成许多可能发生的价格。">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="world">
+  <main>
+    <h1>一条价格，排练成许多可能。</h1>
+    <p class="lede">世界模型把已经发生的价格，排练成许多可能发生的价格。要缩小的是模拟和真实的差距。</p>
+
+    <div class="stage">
+      <canvas id="market" width="960" height="420" aria-label="价格从一条曲线散开，再收成模拟和真实的差距"></canvas>
+      <div class="beatrow">
+        <p class="beat" id="beat">一条价格</p>
+        <button type="button" class="ghost" id="replay">再看一次</button>
+      </div>
+    </div>
+
+    <section class="bench">
+      <h2>评测</h2>
+      <p class="lede">评测会开源。这把尺子量三件事。分数还没有公开。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>项目</th>
+            <th>量什么</th>
+            <th>结果</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>路径</td>
+            <td>模拟和真实的差距</td>
+            <td>即将公开</td>
+          </tr>
+          <tr>
+            <td>执行</td>
+            <td>执行成本</td>
+            <td>即将公开</td>
+          </tr>
+          <tr>
+            <td>反事实</td>
+            <td>没发生过的路径</td>
+            <td>即将公开</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+  <footer>DeepAuto Investments</footer>
+  <script src="nav.js"></script>
+  <script src="world.js"></script>
+</body>
+</html>
