@@ -1,6 +1,7 @@
 const NAV = [
   ["index.html", "公司", "company"],
   ["world.html", "世界模型", "world"],
+  ["optimize.html", "优化策略", "optimize"],
   ["agent.html", "智能体", "agent"],
 ];
 

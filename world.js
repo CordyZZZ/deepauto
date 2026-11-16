@@ -3,13 +3,12 @@ const beatEl = document.getElementById("beat");
 const ctx = canvas.getContext("2d");
 
 const BEATS = [
-  [0, "一条价格"],
-  [1.7, "散开"],
-  [3.2, "许多可能的价格"],
-  [5.2, "真实，和模拟"],
-  [6.6, "差距在缩小"],
+  [0, "真实市场"],
+  [1.6, "模拟器往前演"],
+  [3.6, "拿真实来校准"],
+  [5.4, "差距在缩小"],
 ];
-const END = 8.8;
+const END = 8.2;
 
 const history = walk(48, 430, 210);
 const realFuture = walk(430, 860, history[history.length - 1][1], 0.55);
@@ -41,10 +40,10 @@ function ease(t) {
 }
 
 function spreadAt(time) {
-  if (time < 3.2) return 0;
-  if (time < 5.2) return ease((time - 3.2) / 2);
-  if (time < 6.6) return 1;
-  if (time < END) return 1 - 0.82 * ease((time - 6.6) / 2.2);
+  if (time < 1.6) return 0;
+  if (time < 3.6) return ease((time - 1.6) / 2);
+  if (time < 5.4) return 1;
+  if (time < END) return 1 - 0.82 * ease((time - 5.4) / 2.2);
   return 0.18;
 }
 
@@ -105,37 +104,19 @@ function frame(now) {
   ctx.stroke();
 
   const spread = spreadAt(shown);
-  const drawFuture = shown > 3.2 ? ease(Math.min(1, (shown - 3.2) / 1.4)) : 0;
+  const drawFuture = shown > 1.6 ? ease(Math.min(1, (shown - 1.6) / 1.4)) : 0;
 
-  if (shown > 3.2) {
+  if (shown > 1.6) {
     for (let s = 0; s < SIMS; s += 1) {
       stroke(simPath(s - 2.5, spread), drawFuture, "rgba(125, 206, 196, 0.75)", 1.4);
     }
-    stroke(realFuture, drawFuture, "#f4f1ea", shown > 5.2 ? 2.4 : 1.6);
+    stroke(realFuture, drawFuture, "#f4f1ea", shown > 3.6 ? 2.4 : 1.6);
   }
 
   const histDraw = ease(Math.min(1, shown / 1.5));
-  const histFade = shown < 1.7 ? 1 : Math.max(0.25, 1 - (shown - 1.7) / 1.2);
-  ctx.globalAlpha = histFade;
   stroke(history, histDraw, "#f4f1ea", 2);
-  ctx.globalAlpha = 1;
 
-  if (shown > 1.7 && shown < 4.2) {
-    const burst = ease(Math.min(1, (shown - 1.7) / 1.3));
-    const fade = shown < 3.2 ? 1 : 1 - (shown - 3.2) / 1;
-    ctx.fillStyle = `rgba(244, 241, 234, ${0.85 * fade})`;
-    history.forEach(([x, y], i) => {
-      if (i % 2) return;
-      const ang = i * 0.9;
-      const dx = Math.cos(ang) * 28 * burst;
-      const dy = Math.sin(ang * 1.3) * 22 * burst;
-      ctx.beginPath();
-      ctx.arc(x + dx, y + dy, 2.2, 0, Math.PI * 2);
-      ctx.fill();
-    });
-  }
-
-  if (shown > 5.2 && drawFuture > 0.85) {
+  if (shown > 3.6 && drawFuture > 0.85) {
     const end = realFuture[realFuture.length - 1];
     const sideEnd = simPath(2.5, spread)[realFuture.length - 1];
     const top = Math.min(end[1], sideEnd[1]);

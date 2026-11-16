@@ -4,43 +4,49 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>DeepAuto · 世界模型</title>
-  <meta name="description" content="世界模型把已经发生的价格，排练成许多可能发生的价格。">
+  <meta name="description" content="世界模型是一个用真实市场校准过的生成式模拟器。给定状态和一笔单，它把市场往前演。">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="world">
   <main>
-    <h1>一条价格，排练成许多可能。</h1>
-    <p class="lede">世界模型把已经发生的价格拆开，再长成许多还没发生的价格。要缩小的是模拟和真实之间的差距。</p>
+    <h1>世界模型先学会市场怎么动。</h1>
+    <p class="lede">它是一个生成式的市场模拟器。用真实数据校准之后，给定现在的状态和一笔单，它把后面的价格、成交和成本演出来。</p>
 
     <div class="stage">
-      <canvas id="market" width="960" height="420" aria-label="价格从一条曲线散开，再收成模拟和真实的差距"></canvas>
+      <canvas id="market" width="960" height="420" aria-label="真实市场在左侧。竖线之后，模拟器从同一起点生成多条路径，再向后来真实发生的路径校准。"></canvas>
       <div class="beatrow">
-        <p class="beat" id="beat">一条价格</p>
+        <p class="beat" id="beat">真实市场</p>
         <button type="button" class="ghost" id="replay">再看一次</button>
       </div>
     </div>
 
     <section class="block">
-      <h2>这五拍</h2>
-      <ol class="steps">
-        <li><b>1</b><span>一条价格。先放下已经发生的那条。</span></li>
-        <li><b>2</b><span>散开。把这条价格拆成许多碎片。</span></li>
-        <li><b>3</b><span>许多可能的价格。碎片再长成还没发生的路径。</span></li>
-        <li><b>4</b><span>真实，和模拟。一条是后来真的发生的，其余是排练出来的。</span></li>
-        <li><b>5</b><span>差距在缩小。两条靠得越近，这场排练越有用。</span></li>
-      </ol>
+      <h2>它学的是环境的动态</h2>
+      <p class="prose">世界模型学的是：环境处在某个状态，你做一个动作，下一步会变成什么样。机器人里，状态是手和物体，动作是一次抓取，下一步是接触之后的力和画面。市场里，状态是现在的价格和盘口，动作是一笔单，下一步是成交、价格变化，以及这笔单付掉的成本。</p>
+      <p class="prose">所以它要先成为一个模拟器，而且是生成式的。从同一个起点，它可以长出许多后续，包括当时并没有发生的那些。Dreamer 这一路的做法，是在学到的动态里把轨迹演出来，再让决策在演出来的轨迹上训练。市场这边同一结构：先能把市场往前演，决策才有地方排练。</p>
+      <p class="prose">Xspark 把生成式物理仿真当作引擎，数据同时来自真实环境和模拟，评测量的是模拟离真实还有多远。WeDojo 把同一件事说成：环境本身就是数据，尺子要同时盖住模拟和真实。我们的环境换成市场，结构留着。模拟器先生成，再用真实成交把它校准回去。</p>
     </section>
 
     <section class="block">
-      <h2>拿来做什么</h2>
-      <p class="prose">一句观点如果只在一条历史上成立，还不够。下单之前，先让它在许多可能的价格里走一遍。</p>
-      <p class="prose">排练看两件事。路径像不像后来的真实。若真按这个仓位去做，成本落在哪里。模拟越靠近真实，智能体给出的仓位越站得住。</p>
-      <p class="prose">世界模型不直接替人下单。它把差距交给下一页的智能体，也交给下面这把尺子。</p>
+      <h2>上面这四拍</h2>
+      <ol class="steps">
+        <li><b>1</b><span>真实市场。竖线左边是已经发生的路径，模拟器只能从这里出发。</span></li>
+        <li><b>2</b><span>模拟器往前演。同一个状态，生成许多可能的后续。浅色是生成的路径。</span></li>
+        <li><b>3</b><span>拿真实来校准。白色那条是后来真的发生的。生成路径要向它靠。</span></li>
+        <li><b>4</b><span>差距在缩小。靠得越近，这个模拟器越能用来排练一笔还没发出的单。</span></li>
+      </ol>
+      <p class="prose">校准问的是一个具体问题：如果当时发出的是另一笔单，盘口、成交和成本会怎样。历史里只有一条路径发生了。模拟器要补上没发生的那些，并且在发生了的那条上站得住。</p>
+    </section>
+
+    <section class="block">
+      <h2>它停在市场，不直接给仓位</h2>
+      <p class="prose">世界模型的出口是一批演出来的市场：路径、成交、成本，以及模拟和真实之间还剩多少差距。仓位在下一页才算完。</p>
+      <p class="prose">下一页把预测和决策接到同一个损失上。损失写在扣掉成本之后的结果里，梯度同时回到预测和决策。世界模型负责把那笔成本，以及那些没发生过的路径，变得可以计算。</p>
     </section>
 
     <section class="bench block">
       <h2>评测</h2>
-      <p class="lede">评测会开源。公开的时候，连同题目和量法一起放出来。现在还没有可以核对的分数。</p>
+      <p class="lede">评测量的是模拟器，不是策略赚了多少。题目、量法和分数会一起公开。现在还没有可以核对的分数。</p>
       <table>
         <thead>
           <tr>
@@ -52,25 +58,25 @@
         <tbody>
           <tr>
             <td>路径</td>
-            <td>模拟和后来真实发生的曲线差多远</td>
+            <td>生成的后续，离后来真实发生的曲线多远</td>
             <td>即将公开</td>
           </tr>
           <tr>
             <td>执行</td>
-            <td>若按这个仓位去做，成本是多少</td>
+            <td>若按某一笔单去做，演出来的成本离真实成本多远</td>
             <td>即将公开</td>
           </tr>
           <tr>
             <td>反事实</td>
-            <td>没发生的那些路径，有没有被排练到</td>
+            <td>没发生的动作，模拟器有没有给出自洽的后续</td>
             <td>即将公开</td>
           </tr>
         </tbody>
       </table>
-      <p class="prose">读表时只看这三列。项目是考什么，量什么是怎么打分，结果是分数。格子里写着即将公开，是因为分数还不能被外人核对。</p>
+      <p class="prose">三列分开读。项目是考什么，量什么是怎么打分，结果是分数。格子里写着即将公开，是因为分数还不能被外人核对。尺子先放在这里，分数后补。</p>
     </section>
 
-    <p class="next"><a href="agent.html">下一页 · 智能体</a></p>
+    <p class="next"><a href="optimize.html">下一页 · 优化策略</a></p>
   </main>
   <footer>DeepAuto Investments</footer>
   <script src="nav.js"></script>

@@ -10,44 +10,50 @@
 <body data-page="agent">
   <main>
     <h1>说出观点。确认之后才执行。</h1>
-    <p class="lede">一句话进去。黑箱里是预测和优化，它们一起训练，出来的直接是仓位。账户接在最后，而且要等你确认。</p>
+    <p class="lede">智能体是给人用的那一层。世界模型把市场往前演，优化策略给出仓位。你在这里把一句观点送进去，看见仓位，再决定要不要继续。</p>
+
+    <section class="block">
+      <h2>一句观点要经过的三层</h2>
+      <p class="prose">你不需要先写成因子或股票代码。一句自然语言先被收成意图：方向、想承担的风险、想避开的约束。意图交给世界模型去演：若按这个方向做，路径、成交和成本会怎样，包括当时没发生过的情形。优化策略再在这些结果上给出仓位，预测和决策共用一个损失，损失是收益减去成本。</p>
+      <p class="prose">你看到的是出口。权重留在模型里。出口有四样：这句观点被收成了什么意图，排练里看到了什么，仓位长什么样，以及确认还停在哪里。账户接在确认之后。这一版账户没有接上，所以走到仓位预览就停。</p>
+    </section>
 
     <ol class="steps" id="steps">
-      <li data-step="1"><b>1</b><span>你说出观点。</span></li>
-      <li data-step="2"><b>2</b><span>预测读出这句观点指向哪一侧。</span></li>
-      <li data-step="3"><b>3</b><span>优化把它收成一份考虑过成本的仓位。</span></li>
-      <li data-step="4"><b>4</b><span>仓位先放在你面前。确认权在你。</span></li>
-      <li data-step="5"><b>5</b><span>确认之后，才连接到账户。</span></li>
+      <li data-step="1"><b>1</b><span>你说出观点。用自然语言，先不要写成模型输入。</span></li>
+      <li data-step="2"><b>2</b><span>收成意图。方向、风险和约束先分开，再往下送。</span></li>
+      <li data-step="3"><b>3</b><span>在世界模型里排练。看路径、成本和没发生过的情形。</span></li>
+      <li data-step="4"><b>4</b><span>优化策略给出仓位。仓位先放在你面前。</span></li>
+      <li data-step="5"><b>5</b><span>确认之后，才连接到账户。这一版还停在预览。</span></li>
     </ol>
 
-    <form id="form" class="stage" onsubmit="return generatePosition(event)">
+    <form id="form" class="stage" action="#preview" onsubmit="return window.generatePosition ? window.generatePosition(event) : false">
       <label for="view">你的观点</label>
       <div class="row">
         <input id="view" name="view" type="text" required placeholder="如果美联储降息，加仓科技龙头">
         <button type="submit">生成仓位</button>
       </div>
-      <p class="note">这一版只走到仓位预览，不会下单。</p>
+      <p class="note">试一句观点。这一版只生成仓位预览，不会下单，也不会编出股票或收益。</p>
     </form>
 
     <section id="result" class="machine" hidden aria-live="polite">
       <p class="quote" id="echo" tabindex="-1"></p>
       <div class="box">
-        <div class="node" id="pred">预测</div>
+        <div class="node" id="pred">排练</div>
         <div class="flow" id="flow"><i></i></div>
-        <div class="node" id="opt">优化</div>
-        <p class="pno">预测和优化一起训练，直接给出仓位。黑箱里的权重不展示，你看到的是入口和出口。</p>
+        <div class="node" id="opt">仓位</div>
+        <p class="pno">世界模型先把这句意图演一遍。优化策略再给出仓位。权重不展示，你看到的是入口和出口。</p>
       </div>
       <dl class="out" id="out" hidden>
-        <dt>方向</dt>
-        <dd>顺着这句观点</dd>
-        <dt>预测</dt>
-        <dd>先判断这句观点指向哪一侧</dd>
-        <dt>优化</dt>
-        <dd>再收成一份考虑过成本的仓位</dd>
+        <dt>观点</dt>
+        <dd id="out-view">原句留在上面</dd>
+        <dt>意图</dt>
+        <dd>顺着这句观点，先收成方向和约束</dd>
+        <dt>排练</dt>
+        <dd>在模拟市场里看路径、成交和成本</dd>
         <dt>仓位</dt>
-        <dd>一份预览仓位</dd>
+        <dd>一份预览仓位，由收益减去成本来定</dd>
         <dt>确认</dt>
-        <dd>还停在你这里</dd>
+        <dd>还停在你这里，账户没有接上</dd>
       </dl>
       <div>
         <button type="button" id="account" disabled>连接到账户</button>
@@ -56,81 +62,14 @@
     </section>
 
     <section class="block">
-      <h2>和世界模型的关系</h2>
-      <p class="prose">仓位不是只靠一句话写出来的。它要先在世界模型里对过：模拟路径离真实有多远，执行成本落在哪里。</p>
-      <p class="prose">所以顺序是先看排练，再使用智能体。这一页是出口。上一页是排练场。</p>
-      <p class="next"><a href="world.html">回到世界模型</a></p>
+      <h2>这一页负责到哪</h2>
+      <p class="prose">智能体负责把一句人话接到前面两页的出口上，并且把确认权留在你手里。它让你看见：意图是什么，排练看过什么，仓位是什么。确认之前，这些都还是预览。</p>
+      <p class="prose">确认权留在你手里。这一版停在预览，权重留在模型里。世界模型回答市场会怎么动。优化策略回答仓位该怎么定。智能体回答你怎么把一句观点送进去，以及什么时候才允许碰到账户。</p>
+      <p class="next"><a href="optimize.html">回到优化策略</a></p>
     </section>
   </main>
   <footer>DeepAuto Investments</footer>
   <script src="nav.js"></script>
-  <script>
-    const form = document.getElementById("form");
-    const result = document.getElementById("result");
-    const echo = document.getElementById("echo");
-    const pred = document.getElementById("pred");
-    const opt = document.getElementById("opt");
-    const flow = document.getElementById("flow");
-    const out = document.getElementById("out");
-    const steps = [...document.querySelectorAll("#steps li")];
-    let timers = [];
-
-    function later(fn, ms) {
-      timers.push(window.setTimeout(fn, ms));
-    }
-
-    function mark(step) {
-      steps.forEach((item) => {
-        const on = Number(item.dataset.step) <= step;
-        item.classList.toggle("on", on);
-      });
-    }
-
-    function generatePosition(event) {
-      if (event) event.preventDefault();
-      const text = document.getElementById("view").value.trim();
-      if (!text) {
-        document.getElementById("view").focus();
-        return false;
-      }
-      timers.forEach(window.clearTimeout);
-      timers = [];
-      echo.textContent = text;
-      pred.classList.remove("on");
-      opt.classList.remove("on");
-      flow.classList.remove("run");
-      out.hidden = true;
-      result.hidden = false;
-      mark(1);
-      echo.focus();
-
-      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (reduce) {
-        pred.classList.add("on");
-        opt.classList.add("on");
-        out.hidden = false;
-        mark(4);
-        return false;
-      }
-
-      later(() => {
-        pred.classList.add("on");
-        mark(2);
-      }, 180);
-      later(() => flow.classList.add("run"), 520);
-      later(() => {
-        opt.classList.add("on");
-        mark(3);
-      }, 1100);
-      later(() => {
-        out.hidden = false;
-        mark(4);
-      }, 1600);
-      return false;
-    }
-
-    window.generatePosition = generatePosition;
-    form.addEventListener("submit", generatePosition);
-  </script>
+  <script src="agent.js"></script>
 </body>
 </html>
