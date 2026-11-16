@@ -15,10 +15,7 @@
   const mark = document.createElement("a");
   mark.className = "mark";
   mark.href = "index.html";
-  mark.append(document.createTextNode("DeepAuto Investments"));
-  const credit = document.createElement("small");
-  credit.textContent = "· cordelia";
-  mark.append(credit);
+  mark.textContent = "DeepAuto Investments";
 
   const nav = document.createElement("nav");
   nav.className = "nav";

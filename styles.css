@@ -80,21 +80,11 @@ a { color: inherit; }
 
 .mark {
   font-family: var(--serif);
-  font-size: 1.05rem;
-  line-height: 1.25;
-  max-width: 12rem;
+  font-size: 1.6rem;
+  line-height: 1.15;
+  max-width: 16rem;
   letter-spacing: -0.03em;
   text-decoration: none;
-}
-
-.mark small {
-  display: block;
-  margin-top: 0.2rem;
-  color: var(--muted);
-  font-family: var(--sans);
-  font-size: 0.68rem;
-  font-weight: 400;
-  letter-spacing: 0.01em;
 }
 
 .nav {
