@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DeepAuto</title>
+  <meta name="description" content="说出一句投资观点，先看见策略结构。执行只发生在确认之后。">
+  <style>
+    :root {
+      --bg: #f3f1eb;
+      --ink: #1c1b19;
+      --muted: #6f6b64;
+      --line: #d4d0c6;
+      --soft: #e7e4db;
+      --button: #1c1b19;
+      --button-text: #f3f1eb;
+      --font: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", sans-serif;
+      --max: 40rem;
+      --pad: 1.5rem;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { margin: 0; }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font);
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    main {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 12vh var(--pad) 4rem;
+    }
+
+    .legal {
+      margin: 0 0 0.75rem;
+      color: var(--muted);
+      font-size: 0.8125rem;
+      letter-spacing: 0.04em;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(3rem, 8vw, 4.5rem);
+      font-weight: 560;
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+    }
+
+    .line {
+      margin: 1.25rem 0 0;
+      max-width: 18em;
+      font-size: 1.25rem;
+      line-height: 1.45;
+    }
+
+    form { margin-top: 2rem; }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--muted);
+      font-size: 0.8125rem;
+    }
+
+    .row {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    input {
+      flex: 1;
+      min-width: 0;
+      padding: 0.9rem 1rem;
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      font-size: 1rem;
+    }
+
+    input:focus {
+      outline: 2px solid var(--ink);
+      outline-offset: 1px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 2px;
+      background: var(--button);
+      color: var(--button-text);
+      font: inherit;
+      cursor: pointer;
+      padding: 0.9rem 1.1rem;
+      white-space: nowrap;
+    }
+
+    button:focus-visible {
+      outline: 2px solid var(--ink);
+      outline-offset: 2px;
+    }
+
+    .note {
+      margin: 0.75rem 0 0;
+      color: var(--muted);
+      font-size: 0.8125rem;
+    }
+
+    #result {
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--line);
+    }
+
+    #result h2 {
+      margin: 0 0 1.25rem;
+      font-size: 1.35rem;
+      font-weight: 560;
+      letter-spacing: -0.02em;
+      line-height: 1.4;
+    }
+
+    .section {
+      display: grid;
+      grid-template-columns: 4.5rem 1fr;
+      gap: 1rem;
+      padding: 0.9rem 0;
+      border-top: 1px solid var(--soft);
+    }
+
+    .section dt {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.8125rem;
+    }
+
+    .section dd {
+      margin: 0;
+    }
+
+    .confirm {
+      margin-top: 1.25rem;
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      cursor: default;
+    }
+
+    footer {
+      margin-top: 3rem;
+      color: var(--muted);
+      font-size: 0.8125rem;
+    }
+
+    @media (max-width: 640px) {
+      main { padding-top: 4.5rem; }
+      .row { flex-direction: column; }
+      button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="legal" id="legal"></p>
+    <h1 id="name"></h1>
+    <p class="line" id="line"></p>
+
+    <form id="form">
+      <label for="view">你的观点</label>
+      <div class="row">
+        <input id="view" name="view" type="text" autocomplete="off" required>
+        <button type="submit" id="submit"></button>
+      </div>
+      <p class="note" id="note"></p>
+    </form>
+
+    <section id="result" hidden aria-live="polite">
+      <h2 id="echo" tabindex="-1"></h2>
+      <dl id="sections"></dl>
+      <button type="button" class="confirm" id="confirm" disabled></button>
+      <p class="note" id="confirm-note"></p>
+    </section>
+
+    <footer id="footer"></footer>
+  </main>
+
+  <script>
+    // 改文案只动 SITE。改颜色、字体、宽度只动上面的 :root。
+    const SITE = {
+      name: "DeepAuto",
+      legalName: "DeepAuto Investments",
+      line: "说出观点。执行只发生在你确认之后。",
+      label: "你的观点",
+      placeholder: "如果巴西干旱，咖啡价格会上涨",
+      action: "生成预览",
+      note: "这一版只展示页面结构。",
+      confirm: "确认执行",
+      confirmNote: "确认之后才会到这一步。当前为预览。",
+      footer: "预览版",
+      sections: [
+        ["研究", "相关新闻、数据，以及可以表达这个观点的工具。"],
+        ["策略", "一个考虑过成本的组合，和模拟之后的结果。"],
+        ["风险", "可能的回撤、要占用的资金，以及观点不成立时会怎样。"],
+      ],
+    };
+
+    document.title = SITE.name;
+    document.querySelector('meta[name="description"]').content = SITE.line;
+    document.getElementById("legal").textContent = SITE.legalName;
+    document.getElementById("name").textContent = SITE.name;
+    document.getElementById("line").textContent = SITE.line;
+    document.querySelector('label[for="view"]').textContent = SITE.label;
+    document.getElementById("view").placeholder = SITE.placeholder;
+    document.getElementById("submit").textContent = SITE.action;
+    document.getElementById("note").textContent = SITE.note;
+    document.getElementById("confirm").textContent = SITE.confirm;
+    document.getElementById("confirm-note").textContent = SITE.confirmNote;
+    document.getElementById("footer").textContent = SITE.legalName + " · " + SITE.footer;
+
+    const list = document.getElementById("sections");
+    for (const [title, text] of SITE.sections) {
+      const row = document.createElement("div");
+      row.className = "section";
+      const dt = document.createElement("dt");
+      const dd = document.createElement("dd");
+      dt.textContent = title;
+      dd.textContent = text;
+      row.append(dt, dd);
+      list.append(row);
+    }
+
+    document.getElementById("form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const text = document.getElementById("view").value.trim();
+      if (!text) return;
+      const result = document.getElementById("result");
+      const echo = document.getElementById("echo");
+      echo.textContent = text;
+      result.hidden = false;
+      echo.focus();
+    });
+  </script>
+</body>
+</html>
