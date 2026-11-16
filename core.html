@@ -26,10 +26,9 @@
       <p class="lede" data-zh="之后会考虑开源。" data-en="Open source, considered later.">之后会考虑开源。</p>
 
       <div class="block">
-        <h2 data-zh="回测" data-en="Backtest">回测</h2>
-        <p class="lede" data-zh="黄色从最左边铺开，走到哪里，标出哪里的价格。绿色是预测，可以伸过走势的右端。" data-en="Yellow spreads from the left and names the price where it stops. Green is the forecast, and it may run past the last close.">黄色从最左边铺开，走到哪里，标出哪里的价格。绿色是预测，可以伸过走势的右端。</p>
+        <h2 data-zh="测评" data-en="Evaluation">测评</h2>
         <div class="stage">
-          <canvas id="walk" width="960" height="240" aria-label="回测从左侧展开，预测伸过右端"></canvas>
+          <canvas id="walk" width="960" height="240" aria-label="测评"></canvas>
         </div>
       </div>
     </section>
@@ -42,7 +41,7 @@
       <div class="chain" id="forward"></div>
 
       <h3 class="diagram-title" data-zh="反传" data-en="The return pass">反传</h3>
-      <p class="note" data-zh="同一组框。光点走过去，再沿决策模型和预测模型走回来。" data-en="The same boxes. The light goes forward, then back through the decision model and the prediction model.">同一组框。光点走过去，再沿决策模型和预测模型走回来。</p>
+      <p class="note" data-zh="光点先从数据出发，之后只在另外三个框之间走。" data-en="The light leaves the data once, then moves only among the other three.">光点先从数据出发，之后只在另外三个框之间走。</p>
       <div class="cycle" id="cycle"></div>
       <div class="beatrow">
         <span></span>

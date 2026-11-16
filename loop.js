@@ -74,7 +74,8 @@
   }
 
   const boxes = [...cycle.querySelectorAll(".node")];
-  const route = [0, 1, 2, 3, 2, 1];
+  const loop = [3, 2, 1, 2];
+  let intro = true;
   let hop = 0;
   let hopStart = 0;
 
@@ -87,18 +88,40 @@
     };
   }
 
+  function ends() {
+    if (intro) return [hop, hop + 1];
+    return [loop[hop], loop[(hop + 1) % loop.length]];
+  }
+
   function tick(now) {
     if (!hopStart) hopStart = now;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const from = center(boxes[route[hop]]);
-    const to = center(boxes[route[(hop + 1) % route.length]]);
-    const t = reduce ? 1 : Math.min(1, (now - hopStart) / 900);
+    if (reduce) {
+      const parked = center(boxes[2]);
+      orb.style.left = parked.x + "px";
+      orb.style.top = parked.y + "px";
+      boxes.forEach((el, i) => el.classList.toggle("on", i > 0));
+      requestAnimationFrame(tick);
+      return;
+    }
+    const pair = ends();
+    const from = center(boxes[pair[0]]);
+    const to = center(boxes[pair[1]]);
+    const t = Math.min(1, (now - hopStart) / 900);
     const e = t * t * (3 - 2 * t);
     orb.style.left = from.x + (to.x - from.x) * e + "px";
     orb.style.top = from.y + (to.y - from.y) * e + "px";
-    boxes.forEach((el, i) => el.classList.toggle("on", i === route[hop] || i === route[(hop + 1) % route.length]));
-    if (!reduce && t >= 1) {
-      hop = (hop + 1) % route.length;
+    boxes.forEach((el, i) => el.classList.toggle("on", i === pair[0] || i === pair[1]));
+    if (t >= 1) {
+      if (intro) {
+        hop += 1;
+        if (hop >= 3) {
+          intro = false;
+          hop = 0;
+        }
+      } else {
+        hop = (hop + 1) % loop.length;
+      }
       hopStart = now;
     }
     requestAnimationFrame(tick);

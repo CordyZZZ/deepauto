@@ -21,20 +21,27 @@
   nav.className = "nav";
   nav.setAttribute("aria-label", "分页");
 
-  function add(href, zh, en, id, part) {
-    const link = document.createElement("a");
-    link.href = page === "core" && part ? href : (part ? "core.html" + href : href);
-    link.dataset.zh = zh;
-    link.dataset.en = en;
-    link.dataset.id = id;
-    link.textContent = window.daiLang() === "en" ? en : zh;
-    if (part) link.classList.add("part");
-    nav.append(link);
-    return link;
+  function link(href, zh, en, id, part) {
+    const a = document.createElement("a");
+    a.href = page === "core" && part ? href : (part ? "core.html" + href : href);
+    a.dataset.zh = zh;
+    a.dataset.en = en;
+    a.dataset.id = id;
+    a.textContent = window.daiLang() === "en" ? en : zh;
+    if (part) a.classList.add("part");
+    return a;
   }
 
-  MAIN.forEach((item) => add(...item, false));
-  PARTS.forEach((item) => add(...item, true));
+  nav.append(link(...MAIN[0], false));
+  const stack = document.createElement("div");
+  stack.className = "nav-stack";
+  stack.append(link(...MAIN[1], false));
+  const sub = document.createElement("div");
+  sub.className = "nav-sub";
+  PARTS.forEach((item) => sub.append(link(...item, true)));
+  stack.append(sub);
+  nav.append(stack);
+  nav.append(link(...MAIN[2], false));
 
   const toggle = document.createElement("button");
   toggle.type = "button";

@@ -15,7 +15,6 @@
     [0, "沪深300", "CSI 300"],
     [1.6, "开始模拟", "Simulation begins"],
     [3.5, "后来的真实走势", "What actually followed"],
-    [5.2, "差距留在这里", "The gap stays visible"],
   ];
   const END = 6.8;
   let split = Math.round(n * 0.78);

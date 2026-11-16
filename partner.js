@@ -4,11 +4,11 @@
   if (!chat || !dots) return;
 
   const scenes = [
-    { zh: "观点", en: "View" },
-    { zh: "分析", en: "Analysis" },
-    { zh: "推演", en: "Walk-through" },
-    { zh: "仓位", en: "Position" },
-    { zh: "确认", en: "Confirm" },
+    { zh: "表达意图", en: "Intent" },
+    { zh: "研究和拆解", en: "Research" },
+    { zh: "构建和回测", en: "Build" },
+    { zh: "人工确认", en: "Confirm" },
+    { zh: "执行和复盘", en: "Review" },
   ];
 
   let index = 0;
@@ -44,23 +44,23 @@
       : "如果美联储降息，看向科技龙头。"));
     if (index >= 1) {
       bits.push(bubble("bot", en
-        ? "<b>Analysis</b><span class='work'><i></i><i></i><i></i></span><p>Reading the view. Growth, with the constraint written down.</p>"
-        : "<b>分析</b><span class='work'><i></i><i></i><i></i></span><p>正在处理。方向朝着成长，约束先记下。</p>"));
+        ? "<b>Research</b><span class='work'><i></i><i></i><i></i></span><p>Taking the intent apart. Growth, with the constraint written down.</p>"
+        : "<b>研究和拆解</b><span class='work'><i></i><i></i><i></i></span><p>正在拆开。方向朝着成长，约束先记下。</p>"));
     }
     if (index >= 2) {
       bits.push(bubble("bot", en
-        ? "<b>Walk-through</b><div class='rehearse'><i></i><i></i><i></i></div>"
-        : "<b>推演</b><div class='rehearse'><i></i><i></i><i></i></div>"));
+        ? "<b>Build and test</b><div class='rehearse'><i></i><i></i><i></i></div>"
+        : "<b>构建和回测</b><div class='rehearse'><i></i><i></i><i></i></div>"));
     }
     if (index >= 3) {
       bits.push(bubble("bot", en
-        ? "<b>Position</b><p>A preview, in front of you. No figures yet.</p>"
-        : "<b>仓位</b><p>一份预览，放在你面前。尚无数字。</p>"));
+        ? "<b>Your confirmation</b><p>Nothing runs until you agree.</p><button type='button' disabled>Connect an account</button>"
+        : "<b>人工确认</b><p>先等你点头。</p><button type='button' disabled>连接到账户</button>"));
     }
     if (index >= 4) {
       bits.push(bubble("bot", en
-        ? "<b>Confirm</b><p>It waits for your agreement.</p><button type='button' disabled>Connect an account</button>"
-        : "<b>确认</b><p>执行，等你点头。</p><button type='button' disabled>连接到账户</button>"));
+        ? "<b>Execute and review</b><p>The account is still disconnected. Execution and review come after you confirm.</p>"
+        : "<b>执行和复盘</b><p>账户还没连上。确认之后，才执行，再复盘。</p>"));
     }
     chat.replaceChildren(...bits);
     chat.scrollTop = chat.scrollHeight;
