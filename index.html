@@ -3,61 +3,72 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DeepAuto · 公司</title>
-  <meta name="description" content="让人用一句话表达投资观点，确认之后才执行。">
+  <title>DeepAuto · 我们</title>
+  <meta name="description" content="用 AI 赋能金融市场。动荡之中，用统计把判断做稳。">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body data-page="company">
+<body data-page="we">
   <main>
-    <h1>让人用一句话表达投资观点，确认之后才执行。</h1>
-    <p class="lede">先有一个会往前演的市场，再有一层端到端的优化。人使用的产品，是智能体。</p>
+    <h1>用 AI 赋能金融市场<small class="en">AI for markets you can trust.</small></h1>
+    <p class="lede">动荡之中，用统计把判断做稳。<small class="en">In turbulent markets, statistics keep the judgment steady.</small></p>
+
+    <div class="stage pulse">
+      <canvas id="pulse" width="960" height="180" aria-label="沪深300近期日线"></canvas>
+      <p class="note">沪深300 · CSI 300 · 2026.03.23 – 2026.11.16</p>
+    </div>
 
     <section class="block">
-      <h2>这件事</h2>
-      <p class="prose">有观点的人很多。难的是把一句观点做成仓位，并且在钱还没出去之前，知道市场会怎么接这一笔。</p>
-      <p class="prose">DeepAuto 把这件事分成三层。世界模型学习市场自己怎么动：给定现在的状态和一笔单，把后面的价格、成交和成本演出来，再用真实数据把这场演练校准回去。优化策略把预测和决策接在同一个目标上，目标是扣掉成本之后的结果，出来的是仓位。智能体是给人用的那一层：你说出观点，看到这份仓位，确认之后才执行。</p>
-      <p class="prose">执行停在确认之后。账户可以接上，但没有你的确认，就不往下走。</p>
-    </section>
-
-    <section class="block">
-      <h2>按这个顺序看</h2>
-      <div class="cards">
-        <a class="card" href="index.html">
-          <strong>公司</strong>
-          <span>谁在做，以及确认权留在谁手里。</span>
+      <h2>特色<small class="en">Three things we hold</small></h2>
+      <div class="points">
+        <a href="world.html">
+          <b>01</b>
+          <span>
+            <strong>真实校准</strong>
+            <em>Calibrated on real prices</em>
+            <p>世界模型对着沪深300排练。</p>
+          </span>
         </a>
-        <a class="card" href="world.html">
-          <strong>世界模型</strong>
-          <span>一个生成式的市场模拟器，用真实数据校准，再往前演。</span>
+        <a href="optimize.html">
+          <b>02</b>
+          <span>
+            <strong>端到端</strong>
+            <em>End to end</em>
+            <p>优化为决策服务。</p>
+          </span>
         </a>
-        <a class="card" href="optimize.html">
-          <strong>优化策略</strong>
-          <span>预测和决策一起训练，损失是收益减去成本。</span>
-        </a>
-        <a class="card" href="agent.html">
-          <strong>智能体</strong>
-          <span>一句话怎样变成一份仓位，确认之后才碰到账户。</span>
+        <a href="agent.html">
+          <b>03</b>
+          <span>
+            <strong>你来确认</strong>
+            <em>You keep the final word</em>
+            <p>伙伴出示仓位。执行，等你点头。</p>
+          </span>
         </a>
       </div>
     </section>
 
     <section class="block">
-      <h2>人</h2>
-      <p class="prose">六个位子。每人都是一张照片、一个名字、一句和这件事有关的话。</p>
-      <p class="note">内容还没放上来。</p>
-      <section class="people" aria-label="创始人">
-        <article class="seat"><div class="photo">照片</div><h2>名字</h2><p>一句话</p></article>
-        <article class="seat"><div class="photo">照片</div><h2>名字</h2><p>一句话</p></article>
-        <article class="seat"><div class="photo">照片</div><h2>名字</h2><p>一句话</p></article>
-        <article class="seat"><div class="photo">照片</div><h2>名字</h2><p>一句话</p></article>
-        <article class="seat"><div class="photo">照片</div><h2>名字</h2><p>一句话</p></article>
-        <article class="seat"><div class="photo">照片</div><h2>名字</h2><p>一句话</p></article>
+      <h2>创始团队<small class="en">Founders</small></h2>
+      <section class="people" aria-label="创始团队">
+        <article class="seat"><div class="photo"></div></article>
+        <article class="seat"><div class="photo"></div></article>
+        <article class="seat"><div class="photo"></div></article>
+        <article class="seat"><div class="photo"></div></article>
+        <article class="seat"><div class="photo"></div></article>
+        <article class="seat"><div class="photo"></div></article>
       </section>
     </section>
 
-    <p class="next"><a href="world.html">下一页 · 世界模型</a></p>
+    <section class="block">
+      <h2>联系<small class="en">Contact</small></h2>
+      <p class="who">George Ding<small class="en">Co-founder</small></p>
+      <p class="reach"><a href="mailto:gding@deepautoi.com">gding@deepautoi.com</a></p>
+      <p class="reach"><a href="tel:+85255775300">+852 5577 5300</a></p>
+    </section>
   </main>
   <footer>DeepAuto Investments</footer>
   <script src="nav.js"></script>
+  <script src="csi.js"></script>
+  <script src="home.js"></script>
 </body>
 </html>

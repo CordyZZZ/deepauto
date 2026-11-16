@@ -1,8 +1,8 @@
 const NAV = [
-  ["index.html", "公司", "company"],
-  ["world.html", "世界模型", "world"],
-  ["optimize.html", "优化策略", "optimize"],
-  ["agent.html", "智能体", "agent"],
+  ["index.html", "我们", "We", "we"],
+  ["world.html", "世界模型", "World", "world"],
+  ["optimize.html", "优化策略", "Strategy", "optimize"],
+  ["agent.html", "伙伴", "Partner", "partner"],
 ];
 
 const current = document.body.dataset.page;
@@ -18,10 +18,14 @@ const nav = document.createElement("nav");
 nav.className = "nav";
 nav.setAttribute("aria-label", "分页");
 
-for (const [href, label, id] of NAV) {
+for (const [href, label, en, id] of NAV) {
   const link = document.createElement("a");
   link.href = href;
-  link.textContent = label;
+  const zh = document.createElement("b");
+  zh.textContent = label;
+  const sub = document.createElement("small");
+  sub.textContent = en;
+  link.append(zh, sub);
   if (id === current) link.setAttribute("aria-current", "page");
   nav.append(link);
 }

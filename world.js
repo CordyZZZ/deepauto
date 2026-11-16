@@ -1,172 +1,194 @@
-const canvas = document.getElementById("market");
-const beatEl = document.getElementById("beat");
-const ctx = canvas.getContext("2d");
+(function () {
+  const market = document.getElementById("market");
+  const walk = document.getElementById("walk");
+  const beatEl = document.getElementById("beat");
+  const beatEn = document.getElementById("beat-en");
+  if (!market || typeof CSI === "undefined") return;
 
-const BEATS = [
-  [0, "真实市场"],
-  [1.6, "模拟器往前演"],
-  [3.6, "拿真实来校准"],
-  [5.4, "差距在缩小"],
-];
-const END = 8.2;
+  const close = CSI.close;
+  const SPLIT = 120;
+  const BEATS = [
+    [0, "沪深300", "CSI 300"],
+    [1.7, "开始排练", "Rehearsal begins"],
+    [3.6, "后来的真实走势", "What actually followed"],
+    [5.4, "差距留在这里", "The gap stays visible"],
+  ];
+  const END = 7.2;
+  const lo = Math.min.apply(null, close) - 30;
+  const hi = Math.max.apply(null, close) + 30;
 
-const history = walk(48, 430, 210);
-const realFuture = walk(430, 860, history[history.length - 1][1], 0.55);
-
-function walk(x0, x1, y, calm) {
-  const n = 48;
-  const pts = [];
-  let cur = y;
-  for (let i = 0; i < n; i += 1) {
-    const wobble = Math.sin(i * 0.73 + x0 * 0.01) * 14 + Math.sin(i * 0.27) * 8;
-    cur = cur * 0.82 + (210 + wobble) * 0.18;
-    pts.push([x0 + ((x1 - x0) * i) / (n - 1), cur]);
-  }
-  if (calm) {
-    const start = pts[0][1];
-    return pts.map(([x, py], i) => {
-      const t = i / (n - 1);
-      return [x, start + (py - start) * (0.35 + calm * t)];
-    });
-  }
-  return pts;
-}
-
-realFuture[0][1] = history[history.length - 1][1];
-
-function ease(t) {
-  const x = Math.min(1, Math.max(0, t));
-  return x * x * (3 - 2 * x);
-}
-
-function spreadAt(time) {
-  if (time < 1.6) return 0;
-  if (time < 3.6) return ease((time - 1.6) / 2);
-  if (time < 5.4) return 1;
-  if (time < END) return 1 - 0.82 * ease((time - 5.4) / 2.2);
-  return 0.18;
-}
-
-function simPoint(index, t, spread) {
-  const base = realFuture[index][1];
-  return base + lane * 26 * t * spread;
-}
-
-let lane = 0;
-function simPath(which, spread) {
-  lane = which;
-  return realFuture.map(([x], i) => {
-    const t = i / (realFuture.length - 1);
-    return [x, simPoint(i, t, spread)];
-  });
-}
-
-const SIMS = 6;
-
-function resize() {
-  const width = canvas.clientWidth;
-  const height = Math.round(width * 420 / 960);
-  const ratio = window.devicePixelRatio || 1;
-  canvas.width = Math.round(width * ratio);
-  canvas.height = Math.round(height * ratio);
-  canvas.style.height = height + "px";
-  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-}
-
-let started = 0;
-let lastShown = 0;
-
-function frame(now) {
-  const width = canvas.clientWidth;
-  const height = canvas.clientHeight;
-  const scale = width / 960;
-  const time = Math.min(END, (now - started) / 1000);
-  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const shown = reduce ? END : time;
-
-  ctx.clearRect(0, 0, width, height);
-  ctx.save();
-  ctx.scale(scale, scale);
-
-  ctx.strokeStyle = "rgba(244, 241, 234, 0.08)";
-  ctx.lineWidth = 1;
-  for (let y = 70; y <= 360; y += 58) {
-    ctx.beginPath();
-    ctx.moveTo(48, y);
-    ctx.lineTo(900, y);
-    ctx.stroke();
+  function ease(t) {
+    const x = Math.min(1, Math.max(0, t));
+    return x * x * (3 - 2 * x);
   }
 
-  ctx.strokeStyle = "rgba(226, 177, 90, 0.45)";
-  ctx.beginPath();
-  ctx.moveTo(430, 36);
-  ctx.lineTo(430, 384);
-  ctx.stroke();
+  function xOf(i) {
+    return 56 + (844 * i) / (close.length - 1);
+  }
 
-  const spread = spreadAt(shown);
-  const drawFuture = shown > 1.6 ? ease(Math.min(1, (shown - 1.6) / 1.4)) : 0;
+  function yOf(price) {
+    return 36 + ((hi - price) / (hi - lo)) * 332;
+  }
 
-  if (shown > 1.6) {
-    for (let s = 0; s < SIMS; s += 1) {
-      stroke(simPath(s - 2.5, spread), drawFuture, "rgba(125, 206, 196, 0.75)", 1.4);
+  function simY(i, lane) {
+    const t = (i - SPLIT) / (close.length - 1 - SPLIT);
+    const wave = Math.sin(t * 2.6 + lane * 1.3) * 8 * t;
+    return yOf(close[i]) + lane * 20 * t + wave;
+  }
+
+  const mctx = market.getContext("2d");
+  const wctx = walk.getContext("2d");
+  let started = 0;
+  let lastShown = 0;
+  let walkStarted = 0;
+
+  function fit(canvas, ctx, ratioH) {
+    const width = canvas.clientWidth;
+    const height = Math.round(width * ratioH);
+    const ratio = window.devicePixelRatio || 1;
+    canvas.width = Math.round(width * ratio);
+    canvas.height = Math.round(height * ratio);
+    canvas.style.height = height + "px";
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    return width / (ratioH === 420 / 960 ? 960 : 960);
+  }
+
+  function grid(ctx) {
+    ctx.strokeStyle = "rgba(244, 241, 234, 0.08)";
+    ctx.lineWidth = 1;
+    for (let y = 70; y <= 340; y += 68) {
+      ctx.beginPath();
+      ctx.moveTo(48, y);
+      ctx.lineTo(912, y);
+      ctx.stroke();
     }
-    stroke(realFuture, drawFuture, "#f4f1ea", shown > 3.6 ? 2.4 : 1.6);
   }
 
-  const histDraw = ease(Math.min(1, shown / 1.5));
-  stroke(history, histDraw, "#f4f1ea", 2);
-
-  if (shown > 3.6 && drawFuture > 0.85) {
-    const end = realFuture[realFuture.length - 1];
-    const sideEnd = simPath(2.5, spread)[realFuture.length - 1];
-    const top = Math.min(end[1], sideEnd[1]);
-    const bottom = Math.max(end[1], sideEnd[1]);
-    ctx.font = "14px PingFang SC, sans-serif";
-    ctx.fillStyle = "#f4f1ea";
-    ctx.fillText("真实", 620, top - 14);
-    ctx.fillStyle = "#7dcec4";
-    ctx.fillText("模拟", 620, Math.max(bottom + 18, top + 8));
-    ctx.strokeStyle = "#e2b15a";
+  function strokePts(ctx, pts, portion, color, width) {
+    const count = Math.max(2, Math.floor(pts.length * portion));
+    ctx.strokeStyle = color;
+    ctx.lineWidth = width;
+    ctx.lineJoin = "round";
+    ctx.lineCap = "round";
     ctx.beginPath();
-    ctx.moveTo(878, top);
-    ctx.lineTo(878, bottom);
+    pts.slice(0, count).forEach(([x, y], i) => {
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
     ctx.stroke();
-    ctx.fillStyle = "#e2b15a";
-    ctx.fillText("差距", 888, (top + bottom) / 2 + 4);
   }
 
-  ctx.restore();
+  function marketFrame(now) {
+    const scale = fit(market, mctx, 420 / 960);
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const shown = reduce ? END : Math.min(END, (now - started) / 1000);
+    const hist = [];
+    for (let i = 0; i <= SPLIT; i += 1) hist.push([xOf(i), yOf(close[i])]);
+    const future = [];
+    for (let i = SPLIT; i < close.length; i += 1) future.push([xOf(i), yOf(close[i])]);
 
-  lastShown = shown;
-  const label = [...BEATS].reverse().find(([at]) => shown >= at);
-  beatEl.textContent = label[1];
+    mctx.clearRect(0, 0, market.clientWidth, market.clientHeight);
+    mctx.save();
+    mctx.scale(scale, scale);
+    grid(mctx);
 
-  if (!reduce && time < END) requestAnimationFrame(frame);
-}
+    const splitX = xOf(SPLIT);
+    mctx.strokeStyle = "rgba(226, 177, 90, 0.45)";
+    mctx.beginPath();
+    mctx.moveTo(splitX, 28);
+    mctx.lineTo(splitX, 380);
+    mctx.stroke();
 
-function stroke(points, portion, color, width) {
-  const count = Math.max(2, Math.floor(points.length * portion));
-  ctx.strokeStyle = color;
-  ctx.lineWidth = width;
-  ctx.lineJoin = "round";
-  ctx.lineCap = "round";
-  ctx.beginPath();
-  points.slice(0, count).forEach(([x, y], i) => {
-    if (i === 0) ctx.moveTo(x, y);
-    else ctx.lineTo(x, y);
+    const histDraw = ease(Math.min(1, shown / 1.5));
+    strokePts(mctx, hist, histDraw, "#f4f1ea", 2);
+
+    const fan = shown > 1.7 ? ease(Math.min(1, (shown - 1.7) / 1.5)) : 0;
+    if (fan > 0) {
+      for (let lane = -2; lane <= 2; lane += 1) {
+        if (lane === 0) continue;
+        const path = [];
+        for (let i = SPLIT; i < close.length; i += 1) path.push([xOf(i), simY(i, lane)]);
+        strokePts(mctx, path, fan, "rgba(125, 206, 196, 0.8)", 1.35);
+      }
+    }
+
+    const realDraw = shown > 3.6 ? ease(Math.min(1, (shown - 3.6) / 1.3)) : 0;
+    if (realDraw > 0) strokePts(mctx, future, realDraw, "#f4f1ea", 2.2);
+
+    if (shown > 5.4 && realDraw > 0.9) {
+      const end = future[future.length - 1];
+      const side = simY(close.length - 1, 2);
+      const top = Math.min(end[1], side) - 4;
+      const bottom = Math.max(end[1], side) + 4;
+      const bracketX = Math.min(end[0] + 16, 928);
+      mctx.font = "13px PingFang SC, sans-serif";
+      mctx.fillStyle = "#f4f1ea";
+      mctx.fillText("真实", splitX + 12, 46);
+      mctx.fillStyle = "#7dcec4";
+      mctx.fillText("模拟", splitX + 58, 46);
+      mctx.strokeStyle = "#e2b15a";
+      mctx.beginPath();
+      mctx.moveTo(bracketX, top);
+      mctx.lineTo(bracketX, bottom);
+      mctx.stroke();
+      mctx.fillStyle = "#e2b15a";
+      mctx.fillText("差距", bracketX - 32, top - 8);
+      mctx.fillStyle = "rgba(244,241,234,0.55)";
+      mctx.fillText(CSI.date[SPLIT], splitX + 8, 24);
+    }
+
+    mctx.restore();
+    const label = [...BEATS].reverse().find(([at]) => shown >= at);
+    beatEl.textContent = label[1];
+    beatEn.textContent = label[2];
+    lastShown = shown;
+    if (!reduce && shown < END) requestAnimationFrame(marketFrame);
+  }
+
+  function walkFrame(now) {
+    const scale = fit(walk, wctx, 220 / 960);
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const span = reduce ? 1 : ((now - walkStarted) / 1000) % 8 / 8;
+    const widthN = 36;
+    const start = Math.round(span * (close.length - widthN - 1));
+    const train = 26;
+
+    wctx.clearRect(0, 0, walk.clientWidth, walk.clientHeight);
+    wctx.save();
+    wctx.scale(scale, scale);
+    grid(wctx);
+    const pts = close.map((price, i) => [xOf(i), 28 + ((hi - price) / (hi - lo)) * 164]);
+    strokePts(wctx, pts, 1, "rgba(244,241,234,0.45)", 1.4);
+
+    const x0 = xOf(start);
+    const x1 = xOf(start + train);
+    const x2 = xOf(start + widthN);
+    wctx.fillStyle = "rgba(226, 177, 90, 0.13)";
+    wctx.fillRect(x0, 24, x1 - x0, 172);
+    wctx.fillStyle = "rgba(125, 206, 196, 0.14)";
+    wctx.fillRect(x1, 24, x2 - x1, 172);
+    wctx.font = "13px PingFang SC, sans-serif";
+    wctx.fillStyle = "#e2b15a";
+    wctx.fillText("训练", x0 + 8, 44);
+    wctx.fillStyle = "#7dcec4";
+    wctx.fillText("检验", x1 + 8, 44);
+    wctx.restore();
+    if (!reduce) requestAnimationFrame(walkFrame);
+  }
+
+  function play() {
+    fit(market, mctx, 420 / 960);
+    started = performance.now();
+    requestAnimationFrame(marketFrame);
+  }
+
+  window.addEventListener("resize", () => {
+    fit(market, mctx, 420 / 960);
+    fit(walk, wctx, 220 / 960);
+    if (lastShown >= END) marketFrame(started + END * 1000);
   });
-  ctx.stroke();
-}
-
-function play() {
-  resize();
-  started = performance.now();
-  requestAnimationFrame(frame);
-}
-
-window.addEventListener("resize", () => {
-  resize();
-  if (lastShown >= END) frame(started + END * 1000);
-});
-document.getElementById("replay").addEventListener("click", play);
-play();
+  document.getElementById("replay").addEventListener("click", play);
+  play();
+  walkStarted = performance.now();
+  requestAnimationFrame(walkFrame);
+})();

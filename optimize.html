@@ -4,73 +4,34 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>DeepAuto · 优化策略</title>
-  <meta name="description" content="端到端优化把预测和决策接到同一个损失上。损失是收益减去成本。">
+  <meta name="description" content="端到端。优化为决策服务。数据进入预测模型，再进入决策模型，得到结果。">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="optimize">
   <main>
-    <h1>预测要为决策服务。</h1>
-    <p class="lede">端到端是把预测、决策和执行对准同一个目标：扣掉成本之后的结果。预测准不准，要看它留下的仓位好不好。</p>
+    <h1>优化为决策服务。<small class="en">Optimization serves the decision.</small></h1>
+    <p class="lede">端到端。一次训练，从数据走到结果。<small class="en">End to end. One pass, from data to result.</small></p>
 
-    <section class="block">
-      <h2>分开练的时候，目标是错开的</h2>
-      <p class="prose">常见的流水线是三步。预测先按误差来练，每只股票被同等看待，得到一组预期收益。优化把这组数字当成已经知道的参数，在风险和约束里求出权重。执行再另用一条成交曲线，把权重做成下单。</p>
-      <p class="prose">三步各有各的目标，所以会对不齐。组合最后只押少数几只，还受风险厌恶和持仓约束，误差最小的那组预测，往往不是组合真正用到的预测。预测里的小误差，一旦被当成真参数塞进优化，会变成很极端、很不稳的权重。执行也一样：一个成交量模型可以更准，却排出比固定日内曲线更贵的方案，因为模型优化的是预测误差，执行要的是成本。</p>
-    </section>
-
-    <section class="block">
-      <h2>两种接法</h2>
-      <div class="cards">
-        <article class="card">
-          <strong>先预测，再优化</strong>
-          <span>预测按误差或相关性练好，再拿去求解。决策好不好，这条梯度传不回预测。部署的时候，预测被当成真理。</span>
-        </article>
-        <article class="card">
-          <strong>预测与优化一起练</strong>
-          <span>直接练决策质量。同样的预测误差，如果导致更差的仓位，就算没练好。文献里这叫 predict-and-optimize，对过来的两段式叫 predict-then-optimize。</span>
-        </article>
+    <div class="stage">
+      <div class="chain" id="chain" aria-label="数据到预测模型，到决策模型，到结果">
+        <div class="node"><b>数据</b><small>Data</small></div>
+        <div class="flow"><i></i></div>
+        <div class="node"><b>预测模型</b><small>Prediction</small></div>
+        <div class="flow"><i></i></div>
+        <div class="node"><b>决策模型</b><small>Decision</small></div>
+        <div class="flow"><i></i></div>
+        <div class="node"><b>结果</b><small>Result</small></div>
       </div>
-      <p class="prose">决策质量可以写成后悔：你按预测做出的仓位，比拿真实结果能做出的最好仓位，差了多少。训练去缩小这个差。预测的准确度留在系统里，它不再是唯一的损失。</p>
-    </section>
-
-    <section class="block">
-      <h2>接到哪一层</h2>
-      <ol class="steps">
-        <li><b>1</b><span>数据进入因子层，得到预测。预测仍然是一层，可以是梯度提升树，也可以是网络。</span></li>
-        <li><b>2</b><span>预测进入股票层，得到决策，也就是仓位。这里要能把梯度传回去：软选择、可导的求解，或直接由网络映射到权重。</span></li>
-        <li><b>3</b><span>损失写在仓位上。收益减去线性交易成本，需要的话再减去冲击成本。梯度同时回到预测和决策。</span></li>
-      </ol>
-      <p class="prose">上一页的世界模型负责把成本和那些没发生的路径算出来。这一页负责让这个数成为训练目标，而不是在仓位已经定完之后再核对一次。</p>
-      <p class="prose">模块先留着：预测、损失、求解、评测。端到端是让损失穿过它们。约束更紧、股票更多的时候，没有一种接法在所有问题上都更好，所以一次接一段，每段都能单独看。</p>
-    </section>
-
-    <section class="block">
-      <h2>梯度要过得去的三个方向</h2>
-      <p class="prose">硬的前 K 只股票、以及求解器内部的离散选择，都会把梯度挡住。正在看的接法有三条。</p>
-      <div class="cards">
-        <article class="card">
-          <strong>软选择</strong>
-          <span>把硬的前 K 只换成可导的软掩码，问题仍写成带约束的组合优化。选择可以松，再收紧。</span>
-        </article>
-        <article class="card">
-          <strong>替代损失</strong>
-          <span>训练时不调用求解器。用一个替代损失去逼近决策质量，部署时再求解。</span>
-        </article>
-        <article class="card">
-          <strong>直接映射</strong>
-          <span>让网络从股票特征直接映射到权重。损失仍是组合结果：跟踪误差、收益，加上约束带来的惩罚。</span>
-        </article>
-        <article class="card">
-          <strong>先留着的求解器</strong>
-          <span>已有的预测、二次规划和评测不拆。新的损失先接到能传梯度的那一段，再看决策质量有没有上去。</span>
-        </article>
+      <div class="beatrow">
+        <p class="note">预测和决策一起训练。出来的，是结果。<small class="en">Prediction and decision train together. What comes out is the result.</small></p>
+        <button type="button" class="ghost" id="replay">再看一次<small class="en">Replay</small></button>
       </div>
-      <p class="prose">这一页的出口是一份仓位，还不是一笔成交。成交在确认之后，在下一页的智能体里。</p>
-    </section>
+    </div>
 
-    <p class="next"><a href="agent.html">下一页 · 智能体</a></p>
+    <p class="next"><a href="agent.html">下一页 · 伙伴<small class="en">Next · Partner</small></a></p>
   </main>
   <footer>DeepAuto Investments</footer>
   <script src="nav.js"></script>
+  <script src="optimize.js"></script>
 </body>
 </html>

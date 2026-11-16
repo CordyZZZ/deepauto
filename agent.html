@@ -3,73 +3,31 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DeepAuto · 智能体</title>
-  <meta name="description" content="说出一句观点，看到一份仓位。确认之后才执行。">
+  <title>DeepAuto · 伙伴</title>
+  <meta name="description" content="用户的伙伴。一个例子：如果美联储降息，看向科技龙头。确认之后才执行。">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body data-page="agent">
+<body data-page="partner">
   <main>
-    <h1>说出观点。确认之后才执行。</h1>
-    <p class="lede">智能体是给人用的那一层。世界模型把市场往前演，优化策略给出仓位。你在这里把一句观点送进去，看见仓位，再决定要不要继续。</p>
+    <h1>用户的伙伴<small class="en">Your partner in the market.</small></h1>
+    <p class="lede">一个例子，从头走到确认。<small class="en">One example, followed through to your confirmation.</small></p>
 
-    <section class="block">
-      <h2>一句观点要经过的三层</h2>
-      <p class="prose">你不需要先写成因子或股票代码。一句自然语言先被收成意图：方向、想承担的风险、想避开的约束。意图交给世界模型去演：若按这个方向做，路径、成交和成本会怎样，包括当时没发生过的情形。优化策略再在这些结果上给出仓位，预测和决策共用一个损失，损失是收益减去成本。</p>
-      <p class="prose">你看到的是出口。权重留在模型里。出口有四样：这句观点被收成了什么意图，排练里看到了什么，仓位长什么样，以及确认还停在哪里。账户接在确认之后。这一版账户没有接上，所以走到仓位预览就停。</p>
-    </section>
+    <div class="stage story">
+      <p class="kicker"><span id="kicker">观点</span><small class="en" id="kicker-en">Your view</small></p>
+      <p class="quote" id="line">如果美联储降息，看向科技龙头。</p>
+      <p class="lede" id="line-en">If the Fed cuts, look to the leading names in technology.</p>
+      <div id="extra"></div>
+    </div>
 
-    <ol class="steps" id="steps">
-      <li data-step="1"><b>1</b><span>你说出观点。用自然语言，先不要写成模型输入。</span></li>
-      <li data-step="2"><b>2</b><span>收成意图。方向、风险和约束先分开，再往下送。</span></li>
-      <li data-step="3"><b>3</b><span>在世界模型里排练。看路径、成本和没发生过的情形。</span></li>
-      <li data-step="4"><b>4</b><span>优化策略给出仓位。仓位先放在你面前。</span></li>
-      <li data-step="5"><b>5</b><span>确认之后，才连接到账户。这一版还停在预览。</span></li>
-    </ol>
+    <div class="beatrow">
+      <div class="dots" id="dots" role="tablist" aria-label="例子的五步"></div>
+      <button type="button" class="ghost" id="replay">播放<small class="en">Play</small></button>
+    </div>
 
-    <form id="form" class="stage" action="#preview" onsubmit="return window.generatePosition ? window.generatePosition(event) : false">
-      <label for="view">你的观点</label>
-      <div class="row">
-        <input id="view" name="view" type="text" required placeholder="如果美联储降息，加仓科技龙头">
-        <button type="submit">生成仓位</button>
-      </div>
-      <p class="note">试一句观点。这一版只生成仓位预览，不会下单，也不会编出股票或收益。</p>
-    </form>
-
-    <section id="result" class="machine" hidden aria-live="polite">
-      <p class="quote" id="echo" tabindex="-1"></p>
-      <div class="box">
-        <div class="node" id="pred">排练</div>
-        <div class="flow" id="flow"><i></i></div>
-        <div class="node" id="opt">仓位</div>
-        <p class="pno">世界模型先把这句意图演一遍。优化策略再给出仓位。权重不展示，你看到的是入口和出口。</p>
-      </div>
-      <dl class="out" id="out" hidden>
-        <dt>观点</dt>
-        <dd id="out-view">原句留在上面</dd>
-        <dt>意图</dt>
-        <dd>顺着这句观点，先收成方向和约束</dd>
-        <dt>排练</dt>
-        <dd>在模拟市场里看路径、成交和成本</dd>
-        <dt>仓位</dt>
-        <dd>一份预览仓位，由收益减去成本来定</dd>
-        <dt>确认</dt>
-        <dd>还停在你这里，账户没有接上</dd>
-      </dl>
-      <div>
-        <button type="button" id="account" disabled>连接到账户</button>
-        <p class="note">账户还没有接上。这一步只是预览。</p>
-      </div>
-    </section>
-
-    <section class="block">
-      <h2>这一页负责到哪</h2>
-      <p class="prose">智能体负责把一句人话接到前面两页的出口上，并且把确认权留在你手里。它让你看见：意图是什么，排练看过什么，仓位是什么。确认之前，这些都还是预览。</p>
-      <p class="prose">确认权留在你手里。这一版停在预览，权重留在模型里。世界模型回答市场会怎么动。优化策略回答仓位该怎么定。智能体回答你怎么把一句观点送进去，以及什么时候才允许碰到账户。</p>
-      <p class="next"><a href="optimize.html">回到优化策略</a></p>
-    </section>
+    <p class="next"><a href="world.html">回到世界模型<small class="en">Back to the world model</small></a></p>
   </main>
   <footer>DeepAuto Investments</footer>
   <script src="nav.js"></script>
-  <script src="agent.js"></script>
+  <script src="partner.js"></script>
 </body>
 </html>
