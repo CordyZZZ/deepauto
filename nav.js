@@ -15,7 +15,10 @@
   const mark = document.createElement("a");
   mark.className = "mark";
   mark.href = "index.html";
-  mark.textContent = "DeepAuto Investments";
+  mark.append(document.createTextNode("DeepAuto Investments"));
+  const credit = document.createElement("small");
+  credit.textContent = "· cordelia";
+  mark.append(credit);
 
   const nav = document.createElement("nav");
   nav.className = "nav";
@@ -27,7 +30,7 @@
     a.dataset.zh = zh;
     a.dataset.en = en;
     a.dataset.id = id;
-    a.textContent = window.daiLang() === "en" ? en : zh;
+    a.textContent = zh;
     if (part) a.classList.add("part");
     return a;
   }
@@ -46,11 +49,17 @@
   const toggle = document.createElement("button");
   toggle.type = "button";
   toggle.className = "ghost lang";
-  toggle.id = "lang-toggle";
-  toggle.textContent = window.daiLang() === "en" ? "中文" : "EN";
+  toggle.id = "theme-toggle";
+  function themeLabel() {
+    const light = document.documentElement.dataset.theme === "light";
+    toggle.textContent = light ? "暗" : "亮";
+    toggle.setAttribute("aria-label", light ? "切换到暗色" : "切换到亮色");
+  }
+  themeLabel();
   toggle.addEventListener("click", () => {
-    window.applyLang(window.daiLang() === "en" ? "zh" : "en");
+    window.applyTheme(document.documentElement.dataset.theme === "light" ? "dark" : "light");
   });
+  window.addEventListener("dai-theme", themeLabel);
 
   function markCurrent() {
     const hash = location.hash.replace("#", "");

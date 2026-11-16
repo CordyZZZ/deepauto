@@ -1,25 +1,20 @@
 (function () {
-  const KEY = "dai-lang";
+  const KEY = "dai-theme";
 
   function current() {
-    return localStorage.getItem(KEY) === "en" ? "en" : "zh";
+    return localStorage.getItem(KEY) === "light" ? "light" : "dark";
   }
 
-  function apply(lang) {
-    const next = lang === "en" ? "en" : "zh";
+  function apply(theme) {
+    const next = theme === "light" ? "light" : "dark";
     localStorage.setItem(KEY, next);
-    document.documentElement.lang = next === "en" ? "en" : "zh-Hans";
-    document.documentElement.dataset.lang = next;
-    document.querySelectorAll("[data-zh]").forEach((el) => {
-      const value = next === "en" ? el.dataset.en : el.dataset.zh;
-      if (value != null) el.textContent = value;
-    });
-    const toggle = document.getElementById("lang-toggle");
-    if (toggle) toggle.textContent = next === "en" ? "中文" : "EN";
-    window.dispatchEvent(new CustomEvent("dai-lang", { detail: next }));
+    document.documentElement.dataset.theme = next;
+    document.documentElement.dataset.lang = "zh";
+    document.documentElement.style.colorScheme = next;
+    window.dispatchEvent(new CustomEvent("dai-theme", { detail: next }));
   }
 
-  window.daiLang = current;
-  window.applyLang = apply;
+  window.daiLang = function () { return "zh"; };
+  window.applyTheme = apply;
   apply(current());
 })();

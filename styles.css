@@ -1,4 +1,5 @@
-:root {
+:root,
+:root[data-theme="dark"] {
   --bg: #10110e;
   --panel: #171910;
   --ink: #f4f1ea;
@@ -6,11 +7,48 @@
   --line: #2e3128;
   --real: #f4f1ea;
   --sim: #7dcec4;
+  --sim-line: #8eb4e8;
+  --forecast: #9dce7a;
   --gap: #e2b15a;
+  --grid: rgba(244, 241, 234, 0.08);
+  --wash: rgba(226, 177, 90, 0.18);
+  --hair: rgba(244, 241, 234, 0.35);
+  --ink-dim: rgba(244, 241, 234, 0.7);
+  --tip: rgba(16, 17, 14, 0.92);
+  --bezel: #0c0d0a;
+  --bezel-line: #3c3f36;
+  --cam: #3a3d34;
+  --bubble: #2a2e24;
+  --chin: #2c2f28;
+  --photo: rgba(244, 241, 234, 0.03);
   --serif: "Iowan Old Style", Palatino, "Palatino Linotype", "Songti SC", "Noto Serif SC", serif;
   --sans: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
   --max: 68rem;
   --pad: 1.5rem;
+}
+
+:root[data-theme="light"] {
+  --bg: #f6f3ec;
+  --panel: #fffdf8;
+  --ink: #1c1d18;
+  --muted: #5e5a52;
+  --line: #ddd6c8;
+  --real: #1c1d18;
+  --sim: #2f7a74;
+  --sim-line: #2f6eae;
+  --forecast: #2f7a3a;
+  --gap: #9a6e24;
+  --grid: rgba(28, 29, 24, 0.08);
+  --wash: rgba(154, 110, 36, 0.16);
+  --hair: rgba(28, 29, 24, 0.28);
+  --ink-dim: rgba(28, 29, 24, 0.62);
+  --tip: rgba(255, 253, 248, 0.94);
+  --bezel: #f3efe6;
+  --bezel-line: #c9c2b4;
+  --cam: #b7b1a4;
+  --bubble: #e7e1d6;
+  --chin: #e4ddd0;
+  --photo: rgba(28, 29, 24, 0.04);
 }
 
 * { box-sizing: border-box; }
@@ -44,9 +82,19 @@ a { color: inherit; }
   font-family: var(--serif);
   font-size: 1.05rem;
   line-height: 1.25;
-  max-width: 11rem;
+  max-width: 12rem;
   letter-spacing: -0.03em;
   text-decoration: none;
+}
+
+.mark small {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
 }
 
 .nav {
@@ -394,7 +442,7 @@ input {
   aspect-ratio: 3 / 4;
   margin-bottom: 0.9rem;
   border: 1px dashed var(--line);
-  background: rgba(244, 241, 234, 0.03);
+  background: var(--photo);
 }
 
 .seat .home {
@@ -531,7 +579,7 @@ h2 .en { margin-top: 0.3rem; font-size: 0.55em; }
   margin: 0;
   padding: 0.28rem 0.5rem;
   border: 1px solid var(--line);
-  background: rgba(16, 17, 14, 0.92);
+  background: var(--tip);
   font-size: 0.8125rem;
   font-variant-numeric: tabular-nums;
   pointer-events: none;
@@ -574,9 +622,9 @@ h2 .en { margin-top: 0.3rem; font-size: 0.55em; }
 .laptop { width: min(100%, 44rem); margin-top: 1.75rem; }
 
 .bezel {
-  border: 1px solid #3c3f36;
+  border: 1px solid var(--bezel-line);
   border-radius: 16px 16px 10px 10px;
-  background: #0c0d0a;
+  background: var(--bezel);
   padding: 0.5rem 0.7rem 0.75rem;
 }
 
@@ -585,7 +633,7 @@ h2 .en { margin-top: 0.3rem; font-size: 0.55em; }
   height: 7px;
   margin: 0.2rem auto 0.55rem;
   border-radius: 50%;
-  background: #3a3d34;
+  background: var(--cam);
 }
 
 .chat {
@@ -606,7 +654,7 @@ h2 .en { margin-top: 0.3rem; font-size: 0.55em; }
 
 .msg.user {
   align-self: flex-end;
-  background: #2a2e24;
+  background: var(--bubble);
   border-bottom-right-radius: 3px;
 }
 
@@ -643,10 +691,10 @@ h2 .en { margin-top: 0.3rem; font-size: 0.55em; }
 .chin {
   height: 12px;
   margin: 0 12%;
-  border: 1px solid #3c3f36;
+  border: 1px solid var(--bezel-line);
   border-top: 0;
   border-radius: 0 0 14px 14px;
-  background: linear-gradient(#2c2f28, #171910);
+  background: linear-gradient(var(--chin), var(--panel));
 }
 
 @keyframes blink { 50% { opacity: 0.2; } }
@@ -654,9 +702,9 @@ h2 .en { margin-top: 0.3rem; font-size: 0.55em; }
 .block .people { margin-top: 1.25rem; }
 
 .who {
-  margin: 1rem 0 0;
-  font-family: var(--serif);
-  font-size: 1.7rem;
+  margin: 0.75rem 0 0;
+  font-size: 1rem;
+  font-weight: 500;
 }
 
 .reach { margin: 0.4rem 0 0; }

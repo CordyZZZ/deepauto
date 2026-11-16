@@ -108,8 +108,23 @@
     ctx.stroke();
   }
 
+  function tone() {
+    const style = getComputedStyle(document.documentElement);
+    const pick = (name) => style.getPropertyValue(name).trim();
+    return {
+      ink: pick("--ink"),
+      gap: pick("--gap"),
+      sim: pick("--sim-line"),
+      forecast: pick("--forecast"),
+      grid: pick("--grid"),
+      wash: pick("--wash"),
+      hair: pick("--hair"),
+      dim: pick("--ink-dim"),
+    };
+  }
+
   function grid(ctx, bottom) {
-    ctx.strokeStyle = "rgba(244,241,234,0.08)";
+    ctx.strokeStyle = tone().grid;
     ctx.lineWidth = 1;
     for (let y = 78; y < bottom; y += 70) {
       ctx.beginPath();
@@ -121,16 +136,17 @@
 
   function drawMarket(time) {
     begin(mctx, market, 420);
+    const color = tone();
     grid(mctx, 390);
     const hist = [];
     for (let i = 0; i <= split; i += 1) hist.push([xOf(i), yOf(close[i])]);
     const future = [];
     for (let i = split; i < n; i += 1) future.push([xOf(i), yOf(close[i])]);
     const histDraw = ease(Math.min(1, time / 1.45));
-    stroke(mctx, hist, histDraw, "#f4f1ea", 1.7);
+    stroke(mctx, hist, histDraw, color.ink, 1.7);
 
     const splitX = xOf(split);
-    mctx.strokeStyle = "rgba(226,177,90,0.85)";
+    mctx.strokeStyle = color.gap;
     mctx.lineWidth = 1.25;
     mctx.beginPath();
     mctx.moveTo(splitX, 24);
@@ -139,19 +155,19 @@
 
     const fan = time > 1.6 ? ease(Math.min(1, (time - 1.6) / 1.45)) : 0;
     if (fan > 0) {
-      sims().forEach((path) => stroke(mctx, path, fan, "rgba(142,180,232,0.9)", 1.25));
+      sims().forEach((path) => stroke(mctx, path, fan, color.sim, 1.25));
     }
     const realDraw = time > 3.5 ? ease(Math.min(1, (time - 3.5) / 1.2)) : 0;
-    if (realDraw > 0) stroke(mctx, future, realDraw, "#f4f1ea", 1.8);
+    if (realDraw > 0) stroke(mctx, future, realDraw, color.ink, 1.8);
 
     mctx.font = "13px PingFang SC, sans-serif";
-    mctx.fillStyle = "rgba(244,241,234,0.7)";
+    mctx.fillStyle = color.dim;
     mctx.fillText(dates[split], splitX + 8, 22);
     if (time > 5.2 && realDraw > 0.85) {
-      mctx.fillStyle = "#f4f1ea";
-      mctx.fillText(lang() === "en" ? "Real" : "真实", splitX + 8, 48);
-      mctx.fillStyle = "#8eb4e8";
-      mctx.fillText(lang() === "en" ? "Simulated" : "模拟", splitX + 56, 48);
+      mctx.fillStyle = color.ink;
+      mctx.fillText("真实", splitX + 8, 48);
+      mctx.fillStyle = color.sim;
+      mctx.fillText("模拟", splitX + 56, 48);
       const end = future[future.length - 1];
       const farthest = sims().reduce((acc, path) => {
         const y = path[path.length - 1][1];
@@ -160,25 +176,25 @@
       const top = Math.min(end[1], farthest);
       const bottom = Math.max(end[1], farthest);
       const bracket = Math.min(end[0] + 8, 912);
-      mctx.strokeStyle = "#e2b15a";
+      mctx.strokeStyle = color.gap;
       mctx.beginPath();
       mctx.moveTo(bracket, top);
       mctx.lineTo(bracket, bottom);
       mctx.stroke();
-      mctx.fillStyle = "#e2b15a";
-      mctx.fillText(lang() === "en" ? "Gap" : "差距", Math.max(splitX + 8, bracket - 40), Math.max(70, top - 10));
+      mctx.fillStyle = color.gap;
+      mctx.fillText("差距", Math.max(splitX + 8, bracket - 40), Math.max(70, top - 10));
     }
 
     if (hover >= 0) {
       const hx = xOf(hover);
-      mctx.strokeStyle = "rgba(244,241,234,0.35)";
+      mctx.strokeStyle = color.hair;
       mctx.setLineDash([3, 4]);
       mctx.beginPath();
       mctx.moveTo(hx, 24);
       mctx.lineTo(hx, 396);
       mctx.stroke();
       mctx.setLineDash([]);
-      mctx.fillStyle = "#f4f1ea";
+      mctx.fillStyle = color.ink;
       mctx.beginPath();
       mctx.arc(hx, yOf(close[hover]), 3.2, 0, Math.PI * 2);
       mctx.fill();
@@ -273,12 +289,13 @@
     const span = reduce ? 1 : ((now - walkStart) / 1000) % 16 / 16;
     const frontier = Math.max(1, Math.round(span * (n - 1)));
     const pts = close.map((price, i) => [xHist(i), yWalk(price)]);
-    stroke(wctx, pts.slice(0, frontier + 1), 1, "rgba(244,241,234,0.9)", 1.5);
+    const color = tone();
+    stroke(wctx, pts.slice(0, frontier + 1), 1, color.ink, 1.5);
     const x0 = xHist(0);
     const x1 = xHist(frontier);
-    wctx.fillStyle = "rgba(226,177,90,0.18)";
+    wctx.fillStyle = color.wash;
     wctx.fillRect(x0, 20, Math.max(1, x1 - x0), 196);
-    wctx.strokeStyle = "#e2b15a";
+    wctx.strokeStyle = color.gap;
     wctx.lineWidth = 1.25;
     wctx.beginPath();
     wctx.moveTo(x1, 20);
@@ -296,26 +313,26 @@
         y += (next() - 0.48) * 7 + lane * 0.35;
         wctx.lineTo(x1 + stepX * s, y);
       }
-      wctx.strokeStyle = "rgba(157,206,122,0.9)";
+      wctx.strokeStyle = color.forecast;
       wctx.lineWidth = 1.3;
       wctx.stroke();
     });
 
     wctx.font = "13px PingFang SC, sans-serif";
-    wctx.fillStyle = "#9dce7a";
-    wctx.fillText(lang() === "en" ? "Forecast" : "预测", Math.min(x1 + 12, 900), 36);
+    wctx.fillStyle = color.forecast;
+    wctx.fillText("预测", Math.min(x1 + 12, 900), 36);
     const price = close[frontier].toLocaleString(lang() === "en" ? "en-US" : "zh-CN", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
     const label = dates[frontier] + "  " + price;
-    wctx.fillStyle = "#f4f1ea";
+    wctx.fillStyle = color.ink;
     wctx.fillText(label, Math.max(56, Math.min(x1 + 8, 760)), 58);
     requestAnimationFrame(drawWalk);
   }
 
   document.getElementById("replay").addEventListener("click", play);
-  window.addEventListener("dai-lang", () => {
+  window.addEventListener("dai-theme", () => {
     drawMarket(playing ? shown : END);
   });
   window.addEventListener("resize", () => {
