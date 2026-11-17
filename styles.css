@@ -87,28 +87,29 @@ a { color: inherit; }
   text-decoration: none;
 }
 
-.nav {
-  display: grid;
-  grid-template-columns: auto auto auto;
-  column-gap: 1.5rem;
-  row-gap: 0.4rem;
-  align-items: center;
-  justify-content: end;
+.nav-side {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
   flex: 0 0 auto;
 }
 
-.nav-agent { grid-column: 1; grid-row: 1; }
-.nav-core { grid-column: 2; grid-row: 1; justify-self: start; }
-.nav-we { grid-column: 3; grid-row: 1; }
-
-.nav-sub {
-  grid-column: 2;
-  grid-row: 2;
+.nav {
   display: flex;
-  justify-content: flex-start;
-  gap: 0.85rem;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.4rem;
+}
+
+.nav-main,
+.nav-sub {
+  display: flex;
+  align-items: center;
   white-space: nowrap;
 }
+
+.nav-main { gap: 1.5rem; }
+.nav-sub { gap: 0.85rem; }
 
 .nav a {
   color: var(--muted);
@@ -854,6 +855,11 @@ footer {
   font-size: 0.8125rem;
 }
 
+@media (max-width: 900px) {
+  .top { flex-direction: column; align-items: flex-start; gap: 0.85rem; }
+  .mark { max-width: none; }
+}
+
 @media (max-width: 720px) {
   .people,
   .cards { grid-template-columns: 1fr; }
@@ -876,7 +882,6 @@ footer {
 }
 
 @media (max-width: 520px) {
-  .top { align-items: flex-start; flex-direction: column; gap: 0.75rem; }
   .people { grid-template-columns: 1fr; }
 }
 

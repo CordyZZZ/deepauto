@@ -33,16 +33,13 @@
     return a;
   }
 
-  const agent = link(...MAIN[0], false);
-  agent.classList.add("nav-agent");
-  const core = link(...MAIN[1], false);
-  core.classList.add("nav-core");
-  const we = link(...MAIN[2], false);
-  we.classList.add("nav-we");
+  const main = document.createElement("div");
+  main.className = "nav-main";
+  MAIN.forEach((item) => main.append(link(...item, false)));
   const sub = document.createElement("div");
   sub.className = "nav-sub";
   PARTS.forEach((item) => sub.append(link(...item, true)));
-  nav.append(agent, core, sub, we);
+  nav.append(main, sub);
 
   const toggle = document.createElement("button");
   toggle.type = "button";
@@ -71,6 +68,9 @@
 
   markCurrent();
   window.addEventListener("hashchange", markCurrent);
-  header.append(mark, nav, toggle);
+  const side = document.createElement("div");
+  side.className = "nav-side";
+  side.append(nav, toggle);
+  header.append(mark, side);
   document.body.prepend(header);
 })();
