@@ -556,74 +556,88 @@ input {
   letter-spacing: 0.08em;
 }
 
-.fw {
-  display: grid;
-  grid-template-columns: 12.5rem minmax(0, 1fr) 11rem;
-  gap: 0.75rem;
+.loop {
   margin-top: 1.6rem;
-  align-items: stretch;
+  padding: 1.05rem 1rem 0.95rem;
+  border: 1px solid var(--gap);
+  border-radius: 1.5rem;
 }
 
-.fw-col {
+.loop-track {
   display: flex;
-  flex-direction: column;
-  gap: 0.7rem;
-  padding: 1rem 0.9rem 1.1rem;
+  align-items: stretch;
+  gap: 0.4rem;
+}
+
+.loop-node,
+.loop-flow {
   border: 1px solid var(--line);
   background: var(--panel);
 }
 
-.fw-mid { border-color: var(--gap); background: var(--wash); }
+.loop-node {
+  flex: 0.72;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.75rem 0.55rem;
+  text-align: center;
+}
 
-.fw-k {
-  margin: 0;
+.loop-node b,
+.loop-pipe div {
+  font-family: var(--serif);
+  font-weight: 500;
+}
+
+.loop-flow {
+  flex: 1.6;
+  padding: 0.55rem 0.65rem 0.7rem;
+  border-color: var(--gap);
+  background: var(--wash);
+}
+
+.loop-node small,
+.loop-flow > span {
   color: var(--gap);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   letter-spacing: 0.14em;
 }
 
-.fw-k i { font-style: normal; }
+.loop-pipe {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.45rem;
+}
 
-.fw-node {
+.loop-pipe div {
+  flex: 1;
+  padding: 0.7rem 0.25rem;
   border: 1px solid var(--line);
   background: var(--bg);
-  padding: 0.7rem 0.65rem;
   text-align: center;
-  font-family: var(--serif);
 }
 
-.fw-node b { display: block; font-weight: 500; }
+.loop-hot { border-color: var(--gap); }
 
-.fw-node small {
-  display: block;
-  margin-top: 0.15rem;
-  color: var(--muted);
-  font-family: var(--sans);
-  font-size: 0.75rem;
+.loop-solid {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
 }
 
-.fw-hot { border-color: var(--gap); }
-
-.fw-solid { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-
-.fw-pipe {
-  display: flex;
-  align-items: stretch;
-  gap: 0.35rem;
-}
-
-.fw-pipe .fw-node { flex: 1; }
-
-.fw-arrow {
+.loop-go {
   position: relative;
   flex: 0 0 auto;
   align-self: center;
-  width: 1.15rem;
+  width: 1.1rem;
   height: 1px;
   background: var(--gap);
 }
 
-.fw-arrow::after {
+.loop-go::after {
   content: "";
   position: absolute;
   right: -1px;
@@ -633,43 +647,34 @@ input {
   border-right: 0;
 }
 
-.fw-vlink {
+.loop-return {
   display: flex;
   align-items: center;
-  justify-content: center;
-  min-height: 2.4rem;
+  gap: 0.55rem;
+  margin-top: 0.85rem;
   color: var(--gap);
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  background: linear-gradient(var(--gap), var(--gap)) center / 1px 100% no-repeat;
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
 }
 
-.fw-vlink span {
-  padding: 0.15rem 0.45rem;
-  background: var(--panel);
+.loop-return::before {
+  content: "";
+  border: 5px solid transparent;
+  border-right-color: var(--gap);
+  border-left: 0;
 }
 
-.fw-loss {
-  margin-top: auto;
-  padding-top: 0.85rem;
-  border-top: 1px dashed var(--gap);
+.loop-return::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--gap);
 }
 
-.fw-loss p { margin: 0; }
-
-.fw-eq { margin-top: 0.25rem !important; color: var(--muted); font-size: 0.875rem; }
-
-.fw-back {
-  display: block;
-  margin-top: 0.45rem;
-  color: var(--gap);
-  font-size: 0.75rem;
-}
-
-.fw-deploy {
-  margin: 0;
+.loop-cal {
+  margin: 0.65rem 0 0;
   color: var(--muted);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
 }
 
 .seat .home {
@@ -1028,10 +1033,10 @@ footer {
   .flow i { left: -3px; top: 0; }
   .flow.run i { animation-name: drop; }
   .nav { gap: 0.75rem; }
-  .fw { grid-template-columns: 1fr; }
-  .fw-pipe { flex-direction: column; align-items: stretch; }
-  .fw-arrow { width: 1px; height: 1.1rem; }
-  .fw-arrow::after {
+  .loop-track,
+  .loop-pipe { flex-direction: column; align-items: stretch; }
+  .loop-go { width: 1px; height: 1rem; align-self: center; }
+  .loop-go::after {
     right: auto;
     left: -3.5px;
     top: auto;

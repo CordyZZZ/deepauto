@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title data-zh="DeepAuto Investments · 核心竞争力" data-en="DeepAuto Investments · Strength">DeepAuto Investments · 核心竞争力</title>
   <meta name="description" content="基于真实场景的世界模型、评测基准，以及投资飞轮。">
-  <link rel="stylesheet" href="styles.css?v=30">
+  <link rel="stylesheet" href="styles.css?v=31">
 </head>
 <body data-page="core">
   <main>
@@ -50,49 +50,41 @@
 
     <section class="block" id="strategy">
       <h2 data-zh="投资飞轮" data-en="Investment flywheel">投资飞轮</h2>
-      <p class="lede" data-zh="建组合的每一步都换成可学习的。表现本身，就是决策的损失。" data-en="Every step of building a portfolio is learnable. Performance itself is the decision loss.">建组合的每一步都换成可学习的。表现本身，就是决策的损失。</p>
-      <div class="fw" id="wheel">
-        <div class="fw-col">
-          <p class="fw-k" data-zh="生成式市场" data-en="Generative market">生成式市场</p>
-          <div class="fw-node" data-zh="模拟器" data-en="Simulator">模拟器</div>
-          <div class="fw-vlink"><span data-zh="校准 · 训练" data-en="Calibrate · train">校准 · 训练</span></div>
-          <div class="fw-node fw-solid" data-zh="真实数据" data-en="Real data">真实数据</div>
-        </div>
-        <div class="fw-col fw-mid">
-          <p class="fw-k"><span data-zh="可学习的决策" data-en="Learnable decision">可学习的决策</span> <i>φ</i></p>
-          <div class="fw-pipe">
-            <div class="fw-node" data-zh="数据" data-en="Data">数据</div>
-            <span class="fw-arrow" aria-hidden="true"></span>
-            <div class="fw-node fw-hot">
-              <b data-zh="因子层" data-en="Factor">因子层</b>
-              <small data-zh="预测" data-en="Predict">预测</small>
-            </div>
-            <span class="fw-arrow" aria-hidden="true"></span>
-            <div class="fw-node">
-              <b data-zh="股票层" data-en="Stock">股票层</b>
-              <small data-zh="决策" data-en="Decide">决策</small>
+      <p class="lede" data-zh="生成、分析、执行，按目标绕成一圈。" data-en="Generate, analyze, and execute, then learn back from the objective.">生成、分析、执行，按目标绕成一圈。</p>
+      <div class="loop" id="wheel">
+        <div class="loop-track">
+          <div class="loop-node">
+            <small data-zh="生成式市场" data-en="Generative market">生成式市场</small>
+            <b data-zh="模拟器" data-en="Simulator">模拟器</b>
+          </div>
+          <span class="loop-go" aria-hidden="true"></span>
+          <div class="loop-flow">
+            <span data-zh="分析流" data-en="Analysis stream">分析流</span>
+            <div class="loop-pipe">
+              <div data-zh="数据" data-en="Data">数据</div>
+              <span class="loop-go" aria-hidden="true"></span>
+              <div class="loop-hot" data-zh="预测模型" data-en="Prediction model">预测模型</div>
+              <span class="loop-go" aria-hidden="true"></span>
+              <div data-zh="优化模型" data-en="Optimization model">优化模型</div>
             </div>
           </div>
-          <div class="fw-loss">
-            <p data-zh="表现，就是决策的损失" data-en="Performance is the decision loss">表现，就是决策的损失</p>
-            <p class="fw-eq" data-zh="收益 − 成本" data-en="Return − cost">收益 − 成本</p>
-            <span class="fw-back" data-zh="反馈到预测" data-en="Feeds back into prediction">反馈到预测</span>
+          <span class="loop-go" aria-hidden="true"></span>
+          <div class="loop-node loop-solid">
+            <small data-zh="执行" data-en="Execution">执行</small>
+            <b data-zh="下单" data-en="Orders">下单</b>
           </div>
         </div>
-        <div class="fw-col">
-          <p class="fw-k" data-zh="执行" data-en="Execution">执行</p>
-          <div class="fw-node fw-solid" data-zh="下单" data-en="Orders">下单</div>
-          <p class="fw-deploy" data-zh="部署 φ 到真实交易" data-en="Deploy φ live">部署 φ 到真实交易</p>
-        </div>
+        <div class="loop-return"><span data-zh="根据目标来学习" data-en="Learn from the objective">根据目标来学习</span></div>
+        <p class="loop-cal" data-zh="真实数据在旁边校准模拟器。" data-en="Real data calibrates the simulator beside the loop.">真实数据在旁边校准模拟器。</p>
       </div>
-      <p class="note" data-zh="生成很多条路径来学。价格、仓位、求解器和打单一起学。生成的数据够真，规律才进得了真实市场。" data-en="Many generated paths train the price, the position, the solver, and the order policy together. The paths have to be real enough for the pattern to reach a live market.">生成很多条路径来学。价格、仓位、求解器和打单一起学。生成的数据够真，规律才进得了真实市场。</p>
+      <p class="note" data-zh="模拟器对着真实数据校准，把路径交给预测模型和优化模型。路径够真，这一圈才进得了真实市场。" data-en="The simulator is calibrated on real data, then hands the paths to the prediction model and the optimization model. The paths have to be real enough for the loop to reach a live market.">模拟器对着真实数据校准，把路径交给预测模型和优化模型。路径够真，这一圈才进得了真实市场。</p>
     </section>
   </main>
   <footer>DeepAuto Investments · Cordelia</footer>
-  <script src="lang.js?v=30"></script>
-  <script src="nav.js?v=30"></script>
-  <script src="csi.js?v=30"></script>
-  <script src="world.js?v=30"></script>
-  <script src="loop.js?v=30"></script>
+  <script src="lang.js?v=31"></script>
+  <script src="nav.js?v=31"></script>
+  <script src="csi.js?v=31"></script>
+  <script src="world.js?v=31"></script>
+  <script src="loop.js?v=31"></script>
 </body>
 </html>
