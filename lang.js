@@ -1,20 +1,38 @@
 (function () {
-  const KEY = "dai-theme";
+  const THEME = "dai-theme";
+  const LANG = "dai-lang";
 
-  function current() {
-    return localStorage.getItem(KEY) === "light" ? "light" : "dark";
+  function themeNow() {
+    return localStorage.getItem(THEME) === "light" ? "light" : "dark";
   }
 
-  function apply(theme) {
+  function langNow() {
+    return localStorage.getItem(LANG) === "en" ? "en" : "zh";
+  }
+
+  function applyTheme(theme) {
     const next = theme === "light" ? "light" : "dark";
-    localStorage.setItem(KEY, next);
+    localStorage.setItem(THEME, next);
     document.documentElement.dataset.theme = next;
-    document.documentElement.dataset.lang = "zh";
     document.documentElement.style.colorScheme = next;
     window.dispatchEvent(new CustomEvent("dai-theme", { detail: next }));
   }
 
-  window.daiLang = function () { return "zh"; };
-  window.applyTheme = apply;
-  apply(current());
+  function applyLang(lang) {
+    const next = lang === "en" ? "en" : "zh";
+    localStorage.setItem(LANG, next);
+    document.documentElement.lang = next === "en" ? "en" : "zh-Hans";
+    document.documentElement.dataset.lang = next;
+    document.querySelectorAll("[data-zh]").forEach((el) => {
+      const value = next === "en" ? el.dataset.en : el.dataset.zh;
+      if (value != null) el.textContent = value;
+    });
+    window.dispatchEvent(new CustomEvent("dai-lang", { detail: next }));
+  }
+
+  window.daiLang = langNow;
+  window.applyTheme = applyTheme;
+  window.applyLang = applyLang;
+  applyTheme(themeNow());
+  applyLang(langNow());
 })();

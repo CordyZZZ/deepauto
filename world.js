@@ -64,14 +64,16 @@
   function sims() {
     if (simKey === split) return simCache;
     simKey = split;
-    simCache = [-1.6, -0.7, 0.8, 1.7].map((lane) => {
-      const next = rand((split + 1) * 97 + Math.round(lane * 40) * 13);
+    simCache = [-1.5, -0.85, -0.25, 0.3, 0.9, 1.55].map((lane) => {
+      const next = rand((split + 1) * 97 + Math.round((lane + 3) * 50) * 13);
       const pts = [[xOf(split), yOf(close[split])]];
-      let y = yOf(close[split]);
+      const y0 = yOf(close[split]);
+      const room = Math.max(1, n - 1 - split);
       for (let i = split + 1; i < n; i += 1) {
-        const pull = yOf(close[i]);
-        y = y * 0.62 + pull * 0.38 + (next() - 0.5) * 16 * Math.abs(lane);
-        pts.push([xOf(i), y]);
+        const dist = (i - split) / room;
+        const pull = (yOf(close[i]) - y0) * 0.12 * (1 - dist);
+        const dev = lane * dist * dist * 72 + (next() - 0.5) * dist * 30;
+        pts.push([xOf(i), y0 + pull + dev]);
       }
       return pts;
     });
@@ -165,9 +167,11 @@
     mctx.fillText(dates[split], splitX + 8, 22);
     if (time > 5.2 && realDraw > 0.85) {
       mctx.fillStyle = color.ink;
-      mctx.fillText("真实", splitX + 8, 48);
+      const realWord = lang() === "en" ? "Real" : "真实";
+      const simWord = lang() === "en" ? "Simulated" : "模拟";
+      mctx.fillText(realWord, splitX + 8, 48);
       mctx.fillStyle = color.sim;
-      mctx.fillText("模拟", splitX + 56, 48);
+      mctx.fillText(simWord, splitX + 8 + mctx.measureText(realWord).width + 14, 48);
       const end = future[future.length - 1];
       const farthest = sims().reduce((acc, path) => {
         const y = path[path.length - 1][1];
@@ -182,7 +186,7 @@
       mctx.lineTo(bracket, bottom);
       mctx.stroke();
       mctx.fillStyle = color.gap;
-      mctx.fillText("差距", Math.max(splitX + 8, bracket - 40), Math.max(70, top - 10));
+      mctx.fillText(lang() === "en" ? "Gap" : "差距", Math.max(splitX + 8, bracket - 40), Math.max(70, top - 10));
     }
 
     if (hover >= 0) {
@@ -274,75 +278,65 @@
     if (!playing) drawMarket(END);
   });
 
-  function xHist(i) {
-    return 48 + (760 * i) / (n - 1);
-  }
-
-  function yWalk(price) {
-    return 28 + ((hi - price) / (hi - lo)) * 180;
-  }
-
   let walkSpan = 0;
 
-  function drawWalk(now) {
+  function bookPoint(side, t, spread, peak) {
+    const x = 480 + side * (36 + t * 390);
+    const y = 196 - peak * Math.exp(-0.5 * (t / spread) * (t / spread)) * 150;
+    return [x, y];
+  }
+
+  function drawBook(now) {
     begin(wctx, walk, 240);
-    grid(wctx, 214);
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const span = reduce ? 1 : Math.min(1, (now - walkStart) / 1000 / 36);
-    walkSpan = span;
-    const frontier = Math.max(1, Math.round(span * (n - 1)));
-    const pts = close.map((price, i) => [xHist(i), yWalk(price)]);
     const color = tone();
-    stroke(wctx, pts.slice(0, frontier + 1), 1, color.ink, 1.5);
-    const x0 = xHist(0);
-    const x1 = xHist(frontier);
-    wctx.fillStyle = color.wash;
-    wctx.fillRect(x0, 20, Math.max(1, x1 - x0), 196);
-    wctx.strokeStyle = color.gap;
-    wctx.lineWidth = 1.25;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const span = reduce ? 1 : Math.min(1, (now - walkStart) / 1000 / 8);
+    walkSpan = span;
+    wctx.strokeStyle = color.grid;
+    wctx.lineWidth = 1;
     wctx.beginPath();
-    wctx.moveTo(x1, 20);
-    wctx.lineTo(x1, 216);
+    wctx.moveTo(48, 196);
+    wctx.lineTo(912, 196);
+    wctx.moveTo(480, 28);
+    wctx.lineTo(480, 196);
     wctx.stroke();
 
-    const horizon = 70;
-    const stepX = 150 / horizon;
-    [-1, 0.2, 1].forEach((lane, k) => {
-      const next = rand(9000 + frontier * 3 + k * 17);
-      let y = yWalk(close[frontier]);
-      wctx.beginPath();
-      wctx.moveTo(x1, y);
-      for (let s = 1; s <= horizon; s += 1) {
-        y += (next() - 0.48) * 7 + lane * 0.35;
-        wctx.lineTo(x1 + stepX * s, y);
-      }
-      wctx.strokeStyle = color.sim;
-      wctx.lineWidth = 1.8;
-      wctx.stroke();
-    });
+    function curve(spread, peak, portion, strokeColor) {
+      [-1, 1].forEach((side) => {
+        const steps = Math.max(2, Math.round(48 * portion));
+        wctx.beginPath();
+        for (let i = 0; i <= steps; i += 1) {
+          const [x, y] = bookPoint(side, i / 48, spread, peak);
+          if (i === 0) wctx.moveTo(x, y);
+          else wctx.lineTo(x, y);
+        }
+        wctx.strokeStyle = strokeColor;
+        wctx.lineWidth = 1.7;
+        wctx.stroke();
+      });
+    }
 
+    curve(0.38, 1, 1, color.ink);
+    curve(0.78, 0.72, span, color.sim);
     wctx.font = "13px PingFang SC, sans-serif";
-    wctx.fillStyle = color.sim;
-    wctx.fillText("预测", Math.min(x1 + 12, 900), 36);
-    const price = close[frontier].toLocaleString(lang() === "en" ? "en-US" : "zh-CN", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-    const label = dates[frontier] + "  " + price;
     wctx.fillStyle = color.ink;
-    wctx.fillText(label, Math.max(56, Math.min(x1 + 8, 760)), 58);
-    if (span < 1) requestAnimationFrame(drawWalk);
+    wctx.fillText(lang() === "en" ? "Real book" : "真实订单簿", 56, 42);
+    wctx.fillStyle = color.sim;
+    wctx.fillText(lang() === "en" ? "Forecast book" : "未来限价订单簿", 56, 64);
+    if (span < 1) requestAnimationFrame(drawBook);
   }
 
   document.getElementById("replay").addEventListener("click", play);
-  window.addEventListener("dai-theme", () => {
+  function redrawHeld() {
     drawMarket(playing ? shown : END);
-    if (walkSpan >= 1) drawWalk(walkStart + 36000);
-  });
+    if (walkSpan >= 1) drawBook(walkStart + 8000);
+  }
+  window.addEventListener("dai-theme", redrawHeld);
+  window.addEventListener("dai-lang", redrawHeld);
   window.addEventListener("resize", () => {
     drawMarket(playing ? shown : END);
   });
   play();
   walkStart = performance.now();
-  requestAnimationFrame(drawWalk);
+  requestAnimationFrame(drawBook);
 })();

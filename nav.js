@@ -6,8 +6,8 @@
   ];
   const PARTS = [
     ["#world", "世界模型", "World", "world"],
-    ["#bench", "技术测评", "Benchmark", "bench"],
-    ["#strategy", "数据飞轮", "Flywheel", "strategy"],
+    ["#bench", "评测基准", "Benchmark", "bench"],
+    ["#strategy", "投资飞轮", "Flywheel", "strategy"],
   ];
   const page = document.body.dataset.page;
   const header = document.createElement("header");
@@ -16,7 +16,20 @@
   const mark = document.createElement("a");
   mark.className = "mark";
   mark.href = "index.html";
-  mark.textContent = "DeepAuto Investments";
+  const logoDark = document.createElement("img");
+  logoDark.className = "logo-dark";
+  logoDark.src = "id_imgs/dai/logo-dark.png";
+  logoDark.alt = "DeepAuto Investments";
+  const logoLight = document.createElement("img");
+  logoLight.className = "logo-light";
+  logoLight.src = "id_imgs/dai/logo-light.png";
+  logoLight.alt = "DeepAuto Investments";
+  const cn = document.createElement("span");
+  cn.className = "logo-cn";
+  cn.dataset.zh = "无名投资";
+  cn.dataset.en = "";
+  cn.textContent = "无名投资";
+  mark.append(logoDark, logoLight, cn);
 
   const nav = document.createElement("nav");
   nav.className = "nav";
@@ -68,9 +81,28 @@
 
   markCurrent();
   window.addEventListener("hashchange", markCurrent);
+  const langBtn = document.createElement("button");
+  langBtn.type = "button";
+  langBtn.className = "ghost lang";
+  langBtn.id = "lang-toggle";
+  function langLabel() {
+    const en = document.documentElement.dataset.lang === "en";
+    langBtn.textContent = en ? "中" : "EN";
+    langBtn.setAttribute("aria-label", en ? "切换到中文" : "Switch to English");
+  }
+  langLabel();
+  langBtn.addEventListener("click", () => {
+    window.applyLang(document.documentElement.dataset.lang === "en" ? "zh" : "en");
+  });
+  window.addEventListener("dai-lang", langLabel);
+
+  const toggles = document.createElement("div");
+  toggles.className = "toggles";
+  toggles.append(toggle, langBtn);
   const side = document.createElement("div");
   side.className = "nav-side";
-  side.append(nav, toggle);
+  side.append(nav, toggles);
   header.append(mark, side);
   document.body.prepend(header);
+  window.applyLang(window.daiLang());
 })();

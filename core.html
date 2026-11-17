@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title data-zh="DeepAuto Investments · 核心竞争力" data-en="DeepAuto Investments · Strength">DeepAuto Investments · 核心竞争力</title>
-  <meta name="description" content="基于真实场景的世界模型、技术测评，以及数据飞轮 RSI。">
-  <link rel="stylesheet" href="styles.css?v=26">
+  <meta name="description" content="基于真实场景的世界模型、评测基准，以及投资飞轮。">
+  <link rel="stylesheet" href="styles.css?v=28">
 </head>
 <body data-page="core">
   <main>
@@ -22,58 +22,50 @@
           <button type="button" class="ghost" id="replay" data-zh="再看一次" data-en="Replay">再看一次</button>
         </div>
         <p class="note" data-zh="日线收盘 · 000300 · 2018.1.2 – 2026.11.16。拖动竖线，移动真实与模拟的分界。" data-en="Daily close · 000300 · 2018.1.2 – 2026.11.16. Drag the line to move the split between real and simulated.">日线收盘 · 000300 · 2018.1.2 – 2026.11.16。拖动竖线，移动真实与模拟的分界。</p>
+        <p class="note" data-zh="支持订单干预、宏观冲击、流动性冲击与微观结构冲击的注入及风险传导推演，实现交互式订单仿真。" data-en="An order, a macro shock, a liquidity shock, or a microstructure shock can be injected, then traced as risk. The simulation stays interactive.">支持订单干预、宏观冲击、流动性冲击与微观结构冲击的注入及风险传导推演，实现交互式订单仿真。</p>
       </div>
     </section>
 
     <section class="block" id="bench">
-      <h2>技术测评</h2>
-      <ul class="tasks">
-        <li><b>预测</b>历史之后，要的是分布，不是一条收盘价。</li>
-        <li><b>决策</b>成本扣掉之后，仓位还是否成立。</li>
-        <li><b>校准</b>模拟和后来的真实走势，差距留在明处。</li>
-        <li><b>确认</b>没有点头，就不执行。</li>
-      </ul>
-      <p class="lede">之后会考虑开源。</p>
+      <h2 data-zh="评测基准" data-en="Benchmark">评测基准</h2>
+      <p class="lede" data-zh="比较的是未来限价订单簿分布，和后来的真实订单簿分布。" data-en="What is compared is a forecast of the limit-order-book distribution, and the book that actually followed.">比较的是未来限价订单簿分布，和后来的真实订单簿分布。</p>
+      <p class="prose" data-zh="旨在建立统计保真、规则一致性、压力稳健性、反事实有效性与跨市场泛化并行的多维评测基准，统一基线复现口径、成本假设与计算预算，形成标准化评测协议。" data-en="The aim is one benchmark across statistical fidelity, rule consistency, stress robustness, counterfactual validity, and cross-market generalization, with a shared baseline, cost assumption, and compute budget.">旨在建立统计保真、规则一致性、压力稳健性、反事实有效性与跨市场泛化并行的多维评测基准，统一基线复现口径、成本假设与计算预算，形成标准化评测协议。</p>
+      <p class="lede" data-zh="今年年底开源。" data-en="Open source by the end of this year.">今年年底开源。</p>
       <div class="stage">
-        <canvas id="walk" width="960" height="240" aria-label="技术测评"></canvas>
+        <canvas id="walk" width="960" height="240" aria-label="评测基准"></canvas>
       </div>
+      <p class="note" data-zh="示意。近处两条分布靠近，远处预测更散。没有填入实测分数。" data-en="A sketch. The two distributions sit close near the middle, and the forecast spreads further out. No measured score is filled in.">示意。近处两条分布靠近，远处预测更散。没有填入实测分数。</p>
     </section>
 
     <section class="block" id="strategy">
-      <h2>数据飞轮 RSI</h2>
-      <p class="lede">输入是数据，输出是决策。做过的结果再流回去，这一圈自己学。</p>
-      <div class="fly" id="wheel">
-        <div class="port">
-          <span>输入</span>
-          <b>数据</b>
-        </div>
-        <div class="fly-loop">
-          <svg viewBox="0 0 520 220" aria-hidden="true">
-            <path id="lap" d="M88 58 H430 Q472 58 472 100 V120 Q472 162 430 162 H88 Q46 162 46 120 V100 Q46 58 88 58 Z" fill="none" stroke="currentColor" stroke-width="1.25" />
-            <polygon class="head" points="392,51 414,58 392,65" />
-            <polygon class="head" points="126,155 104,162 126,169" />
-            <circle class="spark" r="4.5" cx="48" cy="58">
-              <animateMotion id="lap-motion" dur="18s" repeatCount="indefinite">
-                <mpath href="#lap" />
-              </animateMotion>
-            </circle>
-          </svg>
-          <p class="on-top">排练</p>
-          <p class="on-bot">自我学习</p>
-          <p class="fly-hub">RSI</p>
-        </div>
-        <div class="port">
-          <span>输出</span>
-          <b>决策</b>
-        </div>
+      <h2 data-zh="投资飞轮" data-en="Investment flywheel">投资飞轮</h2>
+      <p class="lede" data-zh="建组合的每一步都换成可学习的。表现本身，就是决策的损失。" data-en="Every step of building a portfolio is learnable. Performance itself is the decision loss.">建组合的每一步都换成可学习的。表现本身，就是决策的损失。</p>
+      <div class="invest" id="wheel">
+        <article>
+          <b>01</b>
+          <h3 data-zh="生成" data-en="Generate">生成</h3>
+          <p data-zh="生成式模型造出很多条市场路径。端到端学习用的是这些数据，不是单独一条历史。" data-en="A generative model makes many market paths. End-to-end learning trains on those paths, not on one history alone.">生成式模型造出很多条市场路径。端到端学习用的是这些数据，不是单独一条历史。</p>
+        </article>
+        <article>
+          <b>02</b>
+          <h3 data-zh="可学习" data-en="Learnable">可学习</h3>
+          <p data-zh="价格、仓位模型、求解器的参数、下单策略，框架和参数一起学。" data-en="Price, the position model, the solver’s parameters, and the order policy are learned together, framework and parameters.">价格、仓位模型、求解器的参数、下单策略，框架和参数一起学。</p>
+          <p class="loss" data-zh="损失不另造。收益这些表现，就是决策的损失。" data-en="The loss is not invented beside the result. Return, and the performance around it, is the decision loss.">损失不另造。收益这些表现，就是决策的损失。</p>
+        </article>
+        <article>
+          <b>03</b>
+          <h3 data-zh="迁移" data-en="Transfer">迁移</h3>
+          <p data-zh="要进真实市场，生成出来的数据得够真。这样学到的规律才传得过去。" data-en="To reach a real market, the generated data has to be real enough. Only then do the learned patterns transfer.">要进真实市场，生成出来的数据得够真。这样学到的规律才传得过去。</p>
+        </article>
       </div>
+      <p class="invest-back" data-zh="表现流回损失，再学下一轮。" data-en="Performance returns as the loss, and the next round learns from it.">表现流回损失，再学下一轮。</p>
     </section>
   </main>
   <footer>DeepAuto Investments · Cordelia</footer>
-  <script src="lang.js?v=26"></script>
-  <script src="nav.js?v=26"></script>
-  <script src="csi.js?v=26"></script>
-  <script src="world.js?v=26"></script>
-  <script src="loop.js?v=26"></script>
+  <script src="lang.js?v=28"></script>
+  <script src="nav.js?v=28"></script>
+  <script src="csi.js?v=28"></script>
+  <script src="world.js?v=28"></script>
+  <script src="loop.js?v=28"></script>
 </body>
 </html>
