@@ -1,11 +1,12 @@
 (function () {
   const MAIN = [
-    ["index.html", "我们", "We", "we"],
-    ["core.html", "核心竞争力", "Strength", "core"],
     ["agent.html", "智能体", "Agent", "agent"],
+    ["core.html", "核心竞争力", "Strength", "core"],
+    ["index.html", "我们", "We", "we"],
   ];
   const PARTS = [
     ["#world", "世界模型", "World", "world"],
+    ["#bench", "技术测评", "Benchmark", "bench"],
     ["#strategy", "优化策略", "Strategy", "strategy"],
   ];
   const page = document.body.dataset.page;

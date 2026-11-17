@@ -282,11 +282,14 @@
     return 28 + ((hi - price) / (hi - lo)) * 180;
   }
 
+  let walkSpan = 0;
+
   function drawWalk(now) {
     begin(wctx, walk, 240);
     grid(wctx, 214);
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const span = reduce ? 1 : ((now - walkStart) / 1000) % 16 / 16;
+    const span = reduce ? 1 : Math.min(1, (now - walkStart) / 1000 / 36);
+    walkSpan = span;
     const frontier = Math.max(1, Math.round(span * (n - 1)));
     const pts = close.map((price, i) => [xHist(i), yWalk(price)]);
     const color = tone();
@@ -313,13 +316,13 @@
         y += (next() - 0.48) * 7 + lane * 0.35;
         wctx.lineTo(x1 + stepX * s, y);
       }
-      wctx.strokeStyle = color.forecast;
+      wctx.strokeStyle = color.sim;
       wctx.lineWidth = 1.3;
       wctx.stroke();
     });
 
     wctx.font = "13px PingFang SC, sans-serif";
-    wctx.fillStyle = color.forecast;
+    wctx.fillStyle = color.sim;
     wctx.fillText("预测", Math.min(x1 + 12, 900), 36);
     const price = close[frontier].toLocaleString(lang() === "en" ? "en-US" : "zh-CN", {
       minimumFractionDigits: 2,
@@ -328,12 +331,13 @@
     const label = dates[frontier] + "  " + price;
     wctx.fillStyle = color.ink;
     wctx.fillText(label, Math.max(56, Math.min(x1 + 8, 760)), 58);
-    requestAnimationFrame(drawWalk);
+    if (span < 1) requestAnimationFrame(drawWalk);
   }
 
   document.getElementById("replay").addEventListener("click", play);
   window.addEventListener("dai-theme", () => {
     drawMarket(playing ? shown : END);
+    if (walkSpan >= 1) drawWalk(walkStart + 36000);
   });
   window.addEventListener("resize", () => {
     drawMarket(playing ? shown : END);
