@@ -317,7 +317,7 @@
         wctx.lineTo(x1 + stepX * s, y);
       }
       wctx.strokeStyle = color.sim;
-      wctx.lineWidth = 1.3;
+      wctx.lineWidth = 1.8;
       wctx.stroke();
     });
 

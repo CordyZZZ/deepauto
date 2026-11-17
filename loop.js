@@ -22,6 +22,14 @@
   orb.className = "orb";
   wheel.append(orb);
 
+  const arrows = names.map(() => {
+    const el = document.createElement("i");
+    el.className = "arrow";
+    el.textContent = "›";
+    wheel.append(el);
+    return el;
+  });
+
   function layout() {
     const w = wheel.clientWidth;
     const h = wheel.clientHeight;
@@ -36,6 +44,11 @@
       const angle = -Math.PI / 2 + (i / names.length) * Math.PI * 2;
       el.style.left = cx + Math.cos(angle) * radius + "px";
       el.style.top = cy + Math.sin(angle) * radius + "px";
+      const mid = angle + Math.PI / names.length;
+      const arrow = arrows[i];
+      arrow.style.left = cx + Math.cos(mid) * radius + "px";
+      arrow.style.top = cy + Math.sin(mid) * radius + "px";
+      arrow.style.transform = "translate(-50%, -50%) rotate(" + ((mid + Math.PI / 2) * 180) / Math.PI + "deg)";
     });
     return { cx: cx, cy: cy, radius: radius };
   }

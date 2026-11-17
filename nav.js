@@ -7,7 +7,7 @@
   const PARTS = [
     ["#world", "世界模型", "World", "world"],
     ["#bench", "技术测评", "Benchmark", "bench"],
-    ["#strategy", "优化策略", "Strategy", "strategy"],
+    ["#strategy", "数据飞轮", "Flywheel", "strategy"],
   ];
   const page = document.body.dataset.page;
   const header = document.createElement("header");
@@ -33,16 +33,16 @@
     return a;
   }
 
-  nav.append(link(...MAIN[0], false));
-  const stack = document.createElement("div");
-  stack.className = "nav-stack";
-  stack.append(link(...MAIN[1], false));
+  const agent = link(...MAIN[0], false);
+  agent.classList.add("nav-agent");
+  const core = link(...MAIN[1], false);
+  core.classList.add("nav-core");
+  const we = link(...MAIN[2], false);
+  we.classList.add("nav-we");
   const sub = document.createElement("div");
   sub.className = "nav-sub";
   PARTS.forEach((item) => sub.append(link(...item, true)));
-  stack.append(sub);
-  nav.append(stack);
-  nav.append(link(...MAIN[2], false));
+  nav.append(agent, core, sub, we);
 
   const toggle = document.createElement("button");
   toggle.type = "button";

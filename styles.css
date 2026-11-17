@@ -8,7 +8,7 @@
   --real: #f4f1ea;
   --sim: #7dcec4;
   --sim-line: #8eb4e8;
-  --forecast: #9dce7a;
+  --forecast: #8eb4e8;
   --gap: #e2b15a;
   --grid: rgba(244, 241, 234, 0.08);
   --wash: rgba(226, 177, 90, 0.18);
@@ -36,7 +36,7 @@
   --real: #1c1d18;
   --sim: #2f7a74;
   --sim-line: #2f6eae;
-  --forecast: #2f7a3a;
+  --forecast: #2f6eae;
   --gap: #9a6e24;
   --grid: rgba(28, 29, 24, 0.08);
   --wash: rgba(154, 110, 36, 0.16);
@@ -88,22 +88,24 @@ a { color: inherit; }
 }
 
 .nav {
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-end;
-  gap: 1.5rem;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  column-gap: 1.5rem;
+  row-gap: 0.4rem;
+  align-items: center;
+  justify-content: end;
+  flex: 0 0 auto;
 }
 
-.nav-stack {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.4rem;
-}
+.nav-agent { grid-column: 1; grid-row: 1; }
+.nav-core { grid-column: 2; grid-row: 1; justify-self: start; }
+.nav-we { grid-column: 3; grid-row: 1; }
 
 .nav-sub {
+  grid-column: 2;
+  grid-row: 2;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 0.85rem;
   white-space: nowrap;
 }
@@ -418,7 +420,7 @@ input {
 
 .people {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1rem;
 }
 
@@ -499,9 +501,20 @@ input {
 
 .wheel .node {
   position: absolute;
+  z-index: 2;
   width: 7.5rem;
   transform: translate(-50%, -50%);
   background: var(--panel);
+}
+
+.arrow {
+  position: absolute;
+  z-index: 1;
+  color: var(--gap);
+  font-style: normal;
+  font-size: 1.35rem;
+  line-height: 1;
+  pointer-events: none;
 }
 
 .seat .home {
@@ -621,6 +634,7 @@ h2 .en { margin-top: 0.3rem; font-size: 0.55em; }
 }
 
 .role {
+  min-height: 2.6em;
   margin: 0;
   color: var(--muted);
   font-size: 0.8125rem;
