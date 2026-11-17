@@ -1,10 +1,9 @@
 (function () {
   const market = document.getElementById("market");
-  const walk = document.getElementById("walk");
   const beatEl = document.getElementById("beat");
   const beatEn = document.getElementById("beat-en");
   const tip = document.getElementById("tip");
-  if (!market || !walk || typeof CSI === "undefined") return;
+  if (!market || typeof CSI === "undefined") return;
 
   const close = CSI.close;
   const dates = CSI.date;
@@ -25,9 +24,7 @@
   let shown = 0;
   let simKey = -1;
   let simCache = [];
-  let walkStart = 0;
   const mctx = market.getContext("2d");
-  const wctx = walk.getContext("2d");
 
   function lang() {
     return document.documentElement.dataset.lang === "en" ? "en" : "zh";
@@ -64,16 +61,18 @@
   function sims() {
     if (simKey === split) return simCache;
     simKey = split;
-    simCache = [-1.5, -0.85, -0.25, 0.3, 0.9, 1.55].map((lane) => {
-      const next = rand((split + 1) * 97 + Math.round((lane + 3) * 50) * 13);
+    simCache = [11, 29, 47, 71, 97, 131].map((seed) => {
+      const next = rand(split * 131 + seed * 17);
+      const bias = (next() - 0.5) * 18;
+      let shock = 0;
       const pts = [[xOf(split), yOf(close[split])]];
-      const y0 = yOf(close[split]);
       const room = Math.max(1, n - 1 - split);
       for (let i = split + 1; i < n; i += 1) {
         const dist = (i - split) / room;
-        const pull = (yOf(close[i]) - y0) * 0.12 * (1 - dist);
-        const dev = lane * dist * dist * 72 + (next() - 0.5) * dist * 30;
-        pts.push([xOf(i), y0 + pull + dev]);
+        const sigma = 3 + dist * 16;
+        shock = shock * 0.92 + (next() - 0.5) * sigma;
+        const dev = Math.max(-32, Math.min(32, bias * dist + shock));
+        pts.push([xOf(i), yOf(close[i]) + dev]);
       }
       return pts;
     });
@@ -278,58 +277,9 @@
     if (!playing) drawMarket(END);
   });
 
-  let walkSpan = 0;
-
-  function bookPoint(side, t, spread, peak) {
-    const x = 480 + side * (36 + t * 390);
-    const y = 196 - peak * Math.exp(-0.5 * (t / spread) * (t / spread)) * 150;
-    return [x, y];
-  }
-
-  function drawBook(now) {
-    begin(wctx, walk, 240);
-    const color = tone();
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const span = reduce ? 1 : Math.min(1, (now - walkStart) / 1000 / 8);
-    walkSpan = span;
-    wctx.strokeStyle = color.grid;
-    wctx.lineWidth = 1;
-    wctx.beginPath();
-    wctx.moveTo(48, 196);
-    wctx.lineTo(912, 196);
-    wctx.moveTo(480, 28);
-    wctx.lineTo(480, 196);
-    wctx.stroke();
-
-    function curve(spread, peak, portion, strokeColor) {
-      [-1, 1].forEach((side) => {
-        const steps = Math.max(2, Math.round(48 * portion));
-        wctx.beginPath();
-        for (let i = 0; i <= steps; i += 1) {
-          const [x, y] = bookPoint(side, i / 48, spread, peak);
-          if (i === 0) wctx.moveTo(x, y);
-          else wctx.lineTo(x, y);
-        }
-        wctx.strokeStyle = strokeColor;
-        wctx.lineWidth = 1.7;
-        wctx.stroke();
-      });
-    }
-
-    curve(0.38, 1, 1, color.ink);
-    curve(0.78, 0.72, span, color.sim);
-    wctx.font = "13px PingFang SC, sans-serif";
-    wctx.fillStyle = color.ink;
-    wctx.fillText(lang() === "en" ? "Real book" : "真实订单簿", 56, 42);
-    wctx.fillStyle = color.sim;
-    wctx.fillText(lang() === "en" ? "Forecast book" : "未来限价订单簿", 56, 64);
-    if (span < 1) requestAnimationFrame(drawBook);
-  }
-
   document.getElementById("replay").addEventListener("click", play);
   function redrawHeld() {
     drawMarket(playing ? shown : END);
-    if (walkSpan >= 1) drawBook(walkStart + 8000);
   }
   window.addEventListener("dai-theme", redrawHeld);
   window.addEventListener("dai-lang", redrawHeld);
@@ -337,6 +287,4 @@
     drawMarket(playing ? shown : END);
   });
   play();
-  walkStart = performance.now();
-  requestAnimationFrame(drawBook);
 })();

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title data-zh="DeepAuto Investments · 核心竞争力" data-en="DeepAuto Investments · Strength">DeepAuto Investments · 核心竞争力</title>
   <meta name="description" content="基于真实场景的世界模型、评测基准，以及投资飞轮。">
-  <link rel="stylesheet" href="styles.css?v=28">
+  <link rel="stylesheet" href="styles.css?v=30">
 </head>
 <body data-page="core">
   <main>
@@ -28,44 +28,71 @@
 
     <section class="block" id="bench">
       <h2 data-zh="评测基准" data-en="Benchmark">评测基准</h2>
-      <p class="lede" data-zh="比较的是未来限价订单簿分布，和后来的真实订单簿分布。" data-en="What is compared is a forecast of the limit-order-book distribution, and the book that actually followed.">比较的是未来限价订单簿分布，和后来的真实订单簿分布。</p>
+      <p class="lede" data-zh="比较的是未来限价订单簿分布，和真实订单簿分布。" data-en="What is compared is a forecast of the limit-order-book distribution, and the real book.">比较的是未来限价订单簿分布，和真实订单簿分布。</p>
       <p class="prose" data-zh="旨在建立统计保真、规则一致性、压力稳健性、反事实有效性与跨市场泛化并行的多维评测基准，统一基线复现口径、成本假设与计算预算，形成标准化评测协议。" data-en="The aim is one benchmark across statistical fidelity, rule consistency, stress robustness, counterfactual validity, and cross-market generalization, with a shared baseline, cost assumption, and compute budget.">旨在建立统计保真、规则一致性、压力稳健性、反事实有效性与跨市场泛化并行的多维评测基准，统一基线复现口径、成本假设与计算预算，形成标准化评测协议。</p>
       <p class="lede" data-zh="今年年底开源。" data-en="Open source by the end of this year.">今年年底开源。</p>
-      <div class="stage">
-        <canvas id="walk" width="960" height="240" aria-label="评测基准"></canvas>
+      <div class="score">
+        <div class="score-head">
+          <span data-zh="未来限价订单簿" data-en="Forecast book">未来限价订单簿</span>
+          <span class="score-vs" data-zh="对照" data-en="against">对照</span>
+          <span data-zh="真实订单簿" data-en="Real book">真实订单簿</span>
+        </div>
+        <ol>
+          <li><span data-zh="统计保真" data-en="Fidelity">统计保真</span><span class="pips" aria-hidden="true"><b></b><b></b><b></b><b></b><b></b></span><em data-zh="待评" data-en="Open">待评</em></li>
+          <li><span data-zh="规则一致性" data-en="Rules">规则一致性</span><span class="pips" aria-hidden="true"><b></b><b></b><b></b><b></b><b></b></span><em data-zh="待评" data-en="Open">待评</em></li>
+          <li><span data-zh="压力稳健性" data-en="Stress">压力稳健性</span><span class="pips" aria-hidden="true"><b></b><b></b><b></b><b></b><b></b></span><em data-zh="待评" data-en="Open">待评</em></li>
+          <li><span data-zh="反事实有效性" data-en="Counterfactual">反事实有效性</span><span class="pips" aria-hidden="true"><b></b><b></b><b></b><b></b><b></b></span><em data-zh="待评" data-en="Open">待评</em></li>
+          <li><span data-zh="跨市场泛化" data-en="Generalization">跨市场泛化</span><span class="pips" aria-hidden="true"><b></b><b></b><b></b><b></b><b></b></span><em data-zh="待评" data-en="Open">待评</em></li>
+        </ol>
       </div>
-      <p class="note" data-zh="示意。近处两条分布靠近，远处预测更散。没有填入实测分数。" data-en="A sketch. The two distributions sit close near the middle, and the forecast spreads further out. No measured score is filled in.">示意。近处两条分布靠近，远处预测更散。没有填入实测分数。</p>
+      <p class="note" data-zh="打分示意。五个维度共用一套基线、成本假设和计算预算。分数还没填。" data-en="A score sheet, not a result. Five dimensions share one baseline, one cost assumption, and one compute budget. No score is filled in.">打分示意。五个维度共用一套基线、成本假设和计算预算。分数还没填。</p>
     </section>
 
     <section class="block" id="strategy">
       <h2 data-zh="投资飞轮" data-en="Investment flywheel">投资飞轮</h2>
       <p class="lede" data-zh="建组合的每一步都换成可学习的。表现本身，就是决策的损失。" data-en="Every step of building a portfolio is learnable. Performance itself is the decision loss.">建组合的每一步都换成可学习的。表现本身，就是决策的损失。</p>
-      <div class="invest" id="wheel">
-        <article>
-          <b>01</b>
-          <h3 data-zh="生成" data-en="Generate">生成</h3>
-          <p data-zh="生成式模型造出很多条市场路径。端到端学习用的是这些数据，不是单独一条历史。" data-en="A generative model makes many market paths. End-to-end learning trains on those paths, not on one history alone.">生成式模型造出很多条市场路径。端到端学习用的是这些数据，不是单独一条历史。</p>
-        </article>
-        <article>
-          <b>02</b>
-          <h3 data-zh="可学习" data-en="Learnable">可学习</h3>
-          <p data-zh="价格、仓位模型、求解器的参数、下单策略，框架和参数一起学。" data-en="Price, the position model, the solver’s parameters, and the order policy are learned together, framework and parameters.">价格、仓位模型、求解器的参数、下单策略，框架和参数一起学。</p>
-          <p class="loss" data-zh="损失不另造。收益这些表现，就是决策的损失。" data-en="The loss is not invented beside the result. Return, and the performance around it, is the decision loss.">损失不另造。收益这些表现，就是决策的损失。</p>
-        </article>
-        <article>
-          <b>03</b>
-          <h3 data-zh="迁移" data-en="Transfer">迁移</h3>
-          <p data-zh="要进真实市场，生成出来的数据得够真。这样学到的规律才传得过去。" data-en="To reach a real market, the generated data has to be real enough. Only then do the learned patterns transfer.">要进真实市场，生成出来的数据得够真。这样学到的规律才传得过去。</p>
-        </article>
+      <div class="fw" id="wheel">
+        <div class="fw-col">
+          <p class="fw-k" data-zh="生成式市场" data-en="Generative market">生成式市场</p>
+          <div class="fw-node" data-zh="模拟器" data-en="Simulator">模拟器</div>
+          <div class="fw-vlink"><span data-zh="校准 · 训练" data-en="Calibrate · train">校准 · 训练</span></div>
+          <div class="fw-node fw-solid" data-zh="真实数据" data-en="Real data">真实数据</div>
+        </div>
+        <div class="fw-col fw-mid">
+          <p class="fw-k"><span data-zh="可学习的决策" data-en="Learnable decision">可学习的决策</span> <i>φ</i></p>
+          <div class="fw-pipe">
+            <div class="fw-node" data-zh="数据" data-en="Data">数据</div>
+            <span class="fw-arrow" aria-hidden="true"></span>
+            <div class="fw-node fw-hot">
+              <b data-zh="因子层" data-en="Factor">因子层</b>
+              <small data-zh="预测" data-en="Predict">预测</small>
+            </div>
+            <span class="fw-arrow" aria-hidden="true"></span>
+            <div class="fw-node">
+              <b data-zh="股票层" data-en="Stock">股票层</b>
+              <small data-zh="决策" data-en="Decide">决策</small>
+            </div>
+          </div>
+          <div class="fw-loss">
+            <p data-zh="表现，就是决策的损失" data-en="Performance is the decision loss">表现，就是决策的损失</p>
+            <p class="fw-eq" data-zh="收益 − 成本" data-en="Return − cost">收益 − 成本</p>
+            <span class="fw-back" data-zh="反馈到预测" data-en="Feeds back into prediction">反馈到预测</span>
+          </div>
+        </div>
+        <div class="fw-col">
+          <p class="fw-k" data-zh="执行" data-en="Execution">执行</p>
+          <div class="fw-node fw-solid" data-zh="下单" data-en="Orders">下单</div>
+          <p class="fw-deploy" data-zh="部署 φ 到真实交易" data-en="Deploy φ live">部署 φ 到真实交易</p>
+        </div>
       </div>
-      <p class="invest-back" data-zh="表现流回损失，再学下一轮。" data-en="Performance returns as the loss, and the next round learns from it.">表现流回损失，再学下一轮。</p>
+      <p class="note" data-zh="生成很多条路径来学。价格、仓位、求解器和打单一起学。生成的数据够真，规律才进得了真实市场。" data-en="Many generated paths train the price, the position, the solver, and the order policy together. The paths have to be real enough for the pattern to reach a live market.">生成很多条路径来学。价格、仓位、求解器和打单一起学。生成的数据够真，规律才进得了真实市场。</p>
     </section>
   </main>
   <footer>DeepAuto Investments · Cordelia</footer>
-  <script src="lang.js?v=28"></script>
-  <script src="nav.js?v=28"></script>
-  <script src="csi.js?v=28"></script>
-  <script src="world.js?v=28"></script>
-  <script src="loop.js?v=28"></script>
+  <script src="lang.js?v=30"></script>
+  <script src="nav.js?v=30"></script>
+  <script src="csi.js?v=30"></script>
+  <script src="world.js?v=30"></script>
+  <script src="loop.js?v=30"></script>
 </body>
 </html>
