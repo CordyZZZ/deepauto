@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title data-zh="DeepAuto Investments · 核心竞争力" data-en="DeepAuto Investments · Strength">DeepAuto Investments · 核心竞争力</title>
   <meta name="description" content="基于真实场景的世界模型、技术测评，以及数据飞轮 RSI。">
-  <link rel="stylesheet" href="styles.css?v=25">
+  <link rel="stylesheet" href="styles.css?v=26">
 </head>
 <body data-page="core">
   <main>
@@ -41,15 +41,39 @@
 
     <section class="block" id="strategy">
       <h2>数据飞轮 RSI</h2>
-      <p class="lede">数据进来，排练，做决定，反馈再回到数据。</p>
-      <div class="wheel" id="wheel" aria-label="数据飞轮 RSI"></div>
+      <p class="lede">输入是数据，输出是决策。做过的结果再流回去，这一圈自己学。</p>
+      <div class="fly" id="wheel">
+        <div class="port">
+          <span>输入</span>
+          <b>数据</b>
+        </div>
+        <div class="fly-loop">
+          <svg viewBox="0 0 520 220" aria-hidden="true">
+            <path id="lap" d="M88 58 H430 Q472 58 472 100 V120 Q472 162 430 162 H88 Q46 162 46 120 V100 Q46 58 88 58 Z" fill="none" stroke="currentColor" stroke-width="1.25" />
+            <polygon class="head" points="392,51 414,58 392,65" />
+            <polygon class="head" points="126,155 104,162 126,169" />
+            <circle class="spark" r="4.5" cx="48" cy="58">
+              <animateMotion id="lap-motion" dur="18s" repeatCount="indefinite">
+                <mpath href="#lap" />
+              </animateMotion>
+            </circle>
+          </svg>
+          <p class="on-top">排练</p>
+          <p class="on-bot">自我学习</p>
+          <p class="fly-hub">RSI</p>
+        </div>
+        <div class="port">
+          <span>输出</span>
+          <b>决策</b>
+        </div>
+      </div>
     </section>
   </main>
   <footer>DeepAuto Investments · Cordelia</footer>
-  <script src="lang.js?v=25"></script>
-  <script src="nav.js?v=25"></script>
-  <script src="csi.js?v=25"></script>
-  <script src="world.js?v=25"></script>
-  <script src="loop.js?v=25"></script>
+  <script src="lang.js?v=26"></script>
+  <script src="nav.js?v=26"></script>
+  <script src="csi.js?v=26"></script>
+  <script src="world.js?v=26"></script>
+  <script src="loop.js?v=26"></script>
 </body>
 </html>
