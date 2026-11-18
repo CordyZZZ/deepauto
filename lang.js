@@ -3,7 +3,7 @@
   const LANG = "dai-lang";
 
   function themeNow() {
-    return localStorage.getItem(THEME) === "light" ? "light" : "dark";
+    return localStorage.getItem(THEME) === "dark" ? "dark" : "light";
   }
 
   function langNow() {
