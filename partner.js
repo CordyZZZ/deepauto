@@ -100,14 +100,13 @@
     const room = Math.max(1, tape.length - 1 - split);
     simCache = [11, 29, 47, 71, 97].map((seed) => {
       const next = rand(split * 97 + seed * 13);
-      const bias = (next() - 0.5) * 16;
+      const drop = 30 + next() * 18;
       let shock = 0;
       const pts = [[xOf(split), y0]];
       for (let i = split + 1; i < tape.length; i += 1) {
         const dist = (i - split) / room;
-        const sigma = 2 + dist * 14;
-        shock = shock * 0.9 + (next() - 0.5) * sigma;
-        const dev = Math.max(-36, Math.min(36, bias * dist + shock));
+        shock = shock * 0.86 + (next() - 0.5) * (4 + dist * 12);
+        const dev = drop * dist + shock;
         pts.push([xOf(i), y0 + dev]);
       }
       return pts;
