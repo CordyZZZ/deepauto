@@ -98,15 +98,6 @@ a { color: inherit; }
 .mark img.logo-light { display: none; }
 :root[data-theme="light"] .mark img.logo-dark { display: none; }
 :root[data-theme="light"] .mark img.logo-light { display: block; }
-:root[data-lang="en"] .logo-cn { display: none; }
-
-.logo-cn {
-  font-family: var(--serif);
-  font-size: 1.35rem;
-  letter-spacing: 0.18em;
-  line-height: 1.15;
-}
-
 .toggles {
   display: flex;
   gap: 0.4rem;
@@ -446,21 +437,24 @@ input {
 
 .people {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.75rem;
 }
 
 .seat {
-  padding: 1rem;
+  padding: 0.85rem 0.45rem 1rem;
   border: 1px solid var(--line);
   background: var(--panel);
+  text-align: center;
 }
 
 .photo {
-  aspect-ratio: 3 / 4;
-  margin-bottom: 0.9rem;
+  width: 78%;
+  aspect-ratio: 1;
+  margin: 0 auto 0.85rem;
   overflow: hidden;
   border: 1px solid var(--line);
+  border-radius: 50%;
   background: #fff;
 }
 
@@ -469,7 +463,7 @@ input {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 15%;
+  object-position: center 18%;
 }
 
 .team-label {
@@ -480,7 +474,7 @@ input {
   font-weight: 500;
 }
 
-.role { min-height: 1.2em; }
+.role { min-height: 3.4em; }
 
 .tasks {
   margin: 1.15rem 0 0;
@@ -845,7 +839,7 @@ h2 .en { margin-top: 0.3rem; font-size: 0.55em; }
 }
 
 .role {
-  min-height: 2.6em;
+  min-height: 3.4em;
   margin: 0;
   color: var(--muted);
   font-size: 0.8125rem;
@@ -904,6 +898,19 @@ h2 .en { margin-top: 0.3rem; font-size: 0.55em; }
 }
 
 .laptop { width: min(100%, 52rem); margin-top: 1.75rem; }
+
+.reel {
+  margin: 1.75rem 0 0;
+}
+
+.reel video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #07111f;
+}
 
 .bezel {
   border: 1px solid var(--bezel-line);
@@ -1162,9 +1169,8 @@ footer {
 }
 
 @media (max-width: 720px) {
-  .people,
   .cards { grid-template-columns: 1fr; }
-  .people { grid-template-columns: 1fr 1fr; }
+  .people { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .row, .beatrow { flex-direction: column; align-items: flex-start; }
   .row button { width: 100%; }
   .box, .chain { grid-template-columns: 1fr; }
@@ -1199,7 +1205,7 @@ footer {
 }
 
 @media (max-width: 520px) {
-  .people { grid-template-columns: 1fr; }
+  .people { grid-template-columns: 1fr 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {

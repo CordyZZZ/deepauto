@@ -24,12 +24,7 @@
   logoLight.className = "logo-light";
   logoLight.src = "id_imgs/dai/logo-light.png";
   logoLight.alt = "DeepAuto Investments";
-  const cn = document.createElement("span");
-  cn.className = "logo-cn";
-  cn.dataset.zh = "无名投资";
-  cn.dataset.en = "";
-  cn.textContent = "无名投资";
-  mark.append(logoDark, logoLight, cn);
+  mark.append(logoDark, logoLight);
 
   const nav = document.createElement("nav");
   nav.className = "nav";
