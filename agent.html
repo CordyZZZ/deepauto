@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title data-zh="DeepAuto Investments · 智能体" data-en="DeepAuto Investments · Agent">DeepAuto Investments · 智能体</title>
   <meta name="description" content="一句话上手，全流程可控。属于你的机构级交易 agent。">
-  <link rel="stylesheet" href="styles.css?v=39">
+  <link rel="stylesheet" href="styles.css?v=42">
 </head>
 <body data-page="agent">
   <main>
@@ -13,11 +13,26 @@
     <p class="lede" data-zh="属于你的机构级交易agent" data-en="An institutional trading agent that belongs to you.">属于你的机构级交易agent</p>
 
     <figure class="reel">
-      <video src="video.mp4" controls playsinline preload="metadata" aria-label="DeepAuto Agent 演示"></video>
+      <video id="reel" controls playsinline preload="metadata" aria-label="DeepAuto Agent 演示"></video>
     </figure>
   </main>
   <footer>DeepAuto Investments · Cordelia</footer>
-  <script src="lang.js?v=39"></script>
-  <script src="nav.js?v=39"></script>
+  <script src="lang.js?v=42"></script>
+  <script src="nav.js?v=42"></script>
+  <script>
+    (function () {
+      const video = document.getElementById("reel");
+      function file(theme) {
+        return theme === "dark" ? "video.mp4" : "video-light.mp4";
+      }
+      function apply(theme) {
+        const next = file(theme);
+        if (video.getAttribute("src") === next) return;
+        video.src = next;
+      }
+      apply(document.documentElement.dataset.theme);
+      window.addEventListener("dai-theme", (event) => apply(event.detail));
+    })();
+  </script>
 </body>
 </html>
