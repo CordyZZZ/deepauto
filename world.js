@@ -63,15 +63,15 @@
     simKey = split;
     simCache = [11, 29, 47, 71, 97, 131].map((seed) => {
       const next = rand(split * 131 + seed * 17);
-      const bias = (next() - 0.5) * 18;
+      const bias = (next() - 0.5) * 22;
       let shock = 0;
       const pts = [[xOf(split), yOf(close[split])]];
       const room = Math.max(1, n - 1 - split);
       for (let i = split + 1; i < n; i += 1) {
         const dist = (i - split) / room;
-        const sigma = 3 + dist * 16;
-        shock = shock * 0.92 + (next() - 0.5) * sigma;
-        const dev = Math.max(-32, Math.min(32, bias * dist + shock));
+        const sigma = 4 + dist * 24;
+        shock = shock * 0.9 + (next() - 0.5) * sigma;
+        const dev = Math.max(-46, Math.min(46, bias * dist + shock));
         pts.push([xOf(i), yOf(close[i]) + dev]);
       }
       return pts;

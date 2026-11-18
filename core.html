@@ -4,13 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title data-zh="DeepAuto Investments · 核心竞争力" data-en="DeepAuto Investments · Strength">DeepAuto Investments · 核心竞争力</title>
-  <meta name="description" content="基于真实场景的世界模型、评测基准，以及投资飞轮。">
-  <link rel="stylesheet" href="styles.css?v=32">
+  <meta name="description" content="DI Capital World、评测基准，以及投资飞轮。">
+  <link rel="stylesheet" href="styles.css?v=34">
 </head>
 <body data-page="core">
   <main>
     <section id="world">
-      <h1 data-zh="基于真实场景的世界模型" data-en="A world model on real markets">基于真实场景的世界模型</h1>
+      <h1 data-zh="DI Capital World" data-en="DI Capital World">DI Capital World</h1>
+      <p class="lede" data-zh="基于真实场景的世界模型" data-en="A world model on real markets">基于真实场景的世界模型</p>
       <div class="stage">
         <canvas id="market" width="960" height="420" aria-label="沪深300日线，可拖动分界，鼠标经过显示价格"></canvas>
         <p class="tip" id="tip" hidden></p>
@@ -52,39 +53,44 @@
       <h2 data-zh="投资飞轮" data-en="Investment flywheel">投资飞轮</h2>
       <p class="lede" data-zh="生成、分析、执行，按目标绕成一圈。" data-en="Generate, analyze, and execute, then learn back from the objective.">生成、分析、执行，按目标绕成一圈。</p>
       <div class="loop" id="wheel">
-        <div class="loop-track">
-          <div class="loop-node">
-            <small data-zh="生成式市场" data-en="Generative market">生成式市场</small>
-            <b data-zh="模拟器" data-en="Simulator">模拟器</b>
+        <div class="loop-top">
+          <div class="loop-sources">
+            <div class="loop-node">
+              <small data-zh="生成式市场" data-en="Generative market">生成式市场</small>
+              <b data-zh="模拟市场" data-en="Simulated market">模拟市场</b>
+              <i class="feed" aria-hidden="true"></i>
+            </div>
+            <div class="loop-node loop-real">
+              <small data-zh="真实市场" data-en="Real market">真实市场</small>
+              <b data-zh="真实数据" data-en="Real data">真实数据</b>
+              <i class="feed" aria-hidden="true"></i>
+            </div>
           </div>
-          <span class="loop-go" aria-hidden="true"></span>
           <div class="loop-flow">
             <span data-zh="分析流" data-en="Analysis stream">分析流</span>
             <div class="loop-pipe">
-              <div data-zh="数据" data-en="Data">数据</div>
+              <div class="loop-hot" data-zh="数据" data-en="Data">数据</div>
               <span class="loop-go" aria-hidden="true"></span>
-              <div class="loop-hot" data-zh="预测模型" data-en="Prediction model">预测模型</div>
+              <div data-zh="预测模型" data-en="Prediction model">预测模型</div>
               <span class="loop-go" aria-hidden="true"></span>
               <div data-zh="优化模型" data-en="Optimization model">优化模型</div>
             </div>
           </div>
-          <span class="loop-go" aria-hidden="true"></span>
           <div class="loop-node loop-solid">
             <small data-zh="执行" data-en="Execution">执行</small>
             <b data-zh="下单" data-en="Orders">下单</b>
           </div>
         </div>
-        <div class="loop-return"><span data-zh="根据目标来学习" data-en="Learn from the objective">根据目标来学习</span></div>
-        <p class="loop-cal" data-zh="真实数据在旁边校准模拟器。" data-en="Real data calibrates the simulator beside the loop.">真实数据在旁边校准模拟器。</p>
+        <div class="loop-return"><span data-zh="根据目标来学习" data-en="Learn from the objective">根据目标来学习</span><i class="orb" aria-hidden="true"></i></div>
       </div>
-      <p class="note" data-zh="模拟器对着真实数据校准，把路径交给预测模型和优化模型。路径够真，这一圈才进得了真实市场。" data-en="The simulator is calibrated on real data, then hands the paths to the prediction model and the optimization model. The paths have to be real enough for the loop to reach a live market.">模拟器对着真实数据校准，把路径交给预测模型和优化模型。路径够真，这一圈才进得了真实市场。</p>
+      <p class="note" data-zh="模拟市场和真实数据都进入数据。预测模型和优化模型接着学，再按目标绕回来。" data-en="The simulated market and the real data both enter the data. Prediction and optimization learn next, then the loop comes back from the objective.">模拟市场和真实数据都进入数据。预测模型和优化模型接着学，再按目标绕回来。</p>
     </section>
   </main>
   <footer>DeepAuto Investments · Cordelia</footer>
-  <script src="lang.js?v=32"></script>
-  <script src="nav.js?v=32"></script>
-  <script src="csi.js?v=32"></script>
-  <script src="world.js?v=32"></script>
-  <script src="loop.js?v=32"></script>
+  <script src="lang.js?v=34"></script>
+  <script src="nav.js?v=34"></script>
+  <script src="csi.js?v=34"></script>
+  <script src="world.js?v=34"></script>
+  <script src="loop.js?v=34"></script>
 </body>
 </html>

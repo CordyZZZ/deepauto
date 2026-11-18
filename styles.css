@@ -557,16 +557,24 @@ input {
 }
 
 .loop {
+  position: relative;
   margin-top: 1.6rem;
   padding: 1.05rem 1rem 0.95rem;
   border: 1px solid var(--gap);
   border-radius: 1.5rem;
 }
 
-.loop-track {
-  display: flex;
+.loop-top {
+  display: grid;
+  grid-template-columns: 11.5rem minmax(0, 1fr) 8.5rem;
+  gap: 0.7rem;
   align-items: stretch;
-  gap: 0.4rem;
+}
+
+.loop-sources {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
 }
 
 .loop-node,
@@ -576,13 +584,18 @@ input {
 }
 
 .loop-node {
-  flex: 0.72;
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 0.35rem;
-  padding: 0.75rem 0.55rem;
+  gap: 0.3rem;
+  padding: 0.7rem 0.6rem;
   text-align: center;
+}
+
+.loop-real {
+  border-color: var(--gap);
+  background: var(--bg);
 }
 
 .loop-node b,
@@ -591,8 +604,30 @@ input {
   font-weight: 500;
 }
 
+.feed {
+  position: absolute;
+  top: 50%;
+  right: -0.7rem;
+  width: 0.7rem;
+  height: 1px;
+  background: var(--gap);
+}
+
+.feed::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gap);
+  animation: into 2.6s ease-in-out infinite;
+}
+
+.loop-real .feed::after { animation-delay: 0.7s; }
+
 .loop-flow {
-  flex: 1.6;
   padding: 0.55rem 0.65rem 0.7rem;
   border-color: var(--gap);
   background: var(--wash);
@@ -648,6 +683,7 @@ input {
 }
 
 .loop-return {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0.55rem;
@@ -671,10 +707,25 @@ input {
   background: var(--gap);
 }
 
-.loop-cal {
-  margin: 0.65rem 0 0;
-  color: var(--muted);
-  font-size: 0.8125rem;
+.orb {
+  position: absolute;
+  top: 0.15rem;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gap);
+  animation: loopback 3.8s linear infinite;
+}
+
+@keyframes into {
+  0% { transform: translateX(-8px); opacity: 0; }
+  25% { opacity: 1; }
+  100% { transform: translateX(10px); opacity: 0; }
+}
+
+@keyframes loopback {
+  from { left: 88%; }
+  to { left: 8%; }
 }
 
 .seat .home {
@@ -873,8 +924,8 @@ h2 .en { margin-top: 0.3rem; font-size: 0.55em; }
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
-  min-height: 28rem;
-  max-height: 40rem;
+  min-height: 32rem;
+  max-height: 48rem;
   overflow: auto;
 }
 
@@ -936,6 +987,55 @@ h2 .en { margin-top: 0.3rem; font-size: 0.55em; }
   color: var(--muted);
   font-size: 0.75rem;
 }
+
+.moves, .cf { list-style: none; margin: 0.55rem 0 0; padding: 0; }
+.moves li, .cf p {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr auto;
+  gap: 0.55rem;
+  align-items: center;
+  margin: 0;
+  padding: 0.22rem 0;
+  font-size: 0.8125rem;
+}
+.moves em, .cf span { font-style: normal; }
+.moves s, .cf i {
+  display: block;
+  height: 6px;
+  border-radius: 99px;
+  background: var(--line);
+  text-decoration: none;
+}
+.moves b, .cf i::after {
+  content: "";
+  display: block;
+  height: 6px;
+  width: var(--w);
+  border-radius: 99px;
+  background: var(--sim-line);
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: sweep 0.85s ease forwards;
+}
+.moves .up b { background: var(--gap); }
+.moves li:nth-child(2) b, .cf p:nth-child(2) i::after { animation-delay: 0.08s; }
+.moves li:nth-child(3) b { animation-delay: 0.16s; }
+.moves li:nth-child(4) b { animation-delay: 0.24s; }
+.moves li:nth-child(5) b { animation-delay: 0.32s; }
+.moves li:nth-child(6) b { animation-delay: 0.4s; }
+.moves li:nth-child(7) b { animation-delay: 0.48s; }
+.risks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem;
+  margin-top: 0.55rem;
+}
+.risks div {
+  padding: 0.45rem 0.55rem;
+  border-top: 1px solid var(--line);
+}
+.risks b { display: block; font-family: var(--serif); font-weight: 500; }
+.risks span { color: var(--muted); font-size: 0.75rem; }
 
 .tape {
   display: block;
@@ -1019,8 +1119,8 @@ h2 .en { margin-top: 0.3rem; font-size: 0.55em; }
 
 .story { min-height: 16rem; }
 
-.dots { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-.dots button { padding: 0.45rem 0.7rem; font-size: 0.8125rem; }
+.dots { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.dots button { padding: 0.38rem 0.55rem; font-size: 0.75rem; }
 .dots button.on { color: var(--ink); border-color: var(--gap); }
 
 .rehearse { display: grid; gap: 0.85rem; margin-top: 1.25rem; max-width: 28rem; }
@@ -1075,6 +1175,8 @@ footer {
   .flow i { left: -3px; top: 0; }
   .flow.run i { animation-name: drop; }
   .nav { gap: 0.75rem; }
+  .loop-top { grid-template-columns: 1fr; }
+  .feed { display: none; }
   .loop-track,
   .loop-pipe { flex-direction: column; align-items: stretch; }
   .loop-go { width: 1px; height: 1rem; align-self: center; }
@@ -1102,5 +1204,6 @@ footer {
 
 @media (prefers-reduced-motion: reduce) {
   .flow.run i { animation: none; opacity: 1; left: calc(100% - 7px); }
-  .points a, .rehearse i { animation: none; opacity: 1; transform: none; }
+  .points a, .rehearse i, .moves b, .cf i { animation: none; transform: none; opacity: 1; }
+  .feed::after, .orb { animation: none; opacity: 1; }
 }

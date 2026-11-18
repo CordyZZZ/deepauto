@@ -5,17 +5,17 @@
   if (!chat || !dots || !replay) return;
 
   const scenes = [
-    { zh: "表达意图", en: "Intent" },
-    { zh: "研究和拆解", en: "Research" },
-    { zh: "构建和回测", en: "Build" },
+    { zh: "意图确认", en: "Intent" },
+    { zh: "数据分析", en: "Data" },
+    { zh: "策略构建", en: "Strategy" },
+    { zh: "仿真测试", en: "Simulate" },
+    { zh: "风险揭示", en: "Risk" },
     { zh: "人工确认", en: "Confirm" },
-    { zh: "执行和复盘", en: "Review" },
+    { zh: "实际执行", en: "Execute" },
+    { zh: "持续复盘", en: "Review" },
   ];
 
   const tape = [
-    ["2026-09-18", 222.27], ["2026-09-21", 227.38], ["2026-09-22", 228.87], ["2026-09-23", 225.51],
-    ["2026-09-24", 224.58], ["2026-09-25", 225.07], ["2026-09-28", 228.86], ["2026-09-29", 227.21],
-    ["2026-09-30", 228.38], ["2026-10-01", 230.86], ["2026-10-02", 233.95], ["2026-10-05", 238.9],
     ["2026-10-06", 239.24], ["2026-10-07", 237.47], ["2026-10-08", 230.48], ["2026-10-09", 229.28],
     ["2026-10-12", 226.32], ["2026-10-13", 228.52], ["2026-10-14", 221.3], ["2026-10-15", 217.23],
     ["2026-10-16", 214.13], ["2026-10-19", 217.09], ["2026-10-20", 216.47], ["2026-10-21", 221.97],
@@ -23,7 +23,7 @@
     ["2026-10-28", 215.38], ["2026-10-29", 213.66], ["2026-10-30", 204.64], ["2026-11-02", 202.06],
     ["2026-11-03", 206.69], ["2026-11-04", 200.13], ["2026-11-05", 181.6], ["2026-11-06", 186.64],
     ["2026-11-09", 178.67], ["2026-11-10", 168.89], ["2026-11-11", 173.73], ["2026-11-12", 166.19],
-    ["2026-11-13", 162.85], ["2026-11-16", 156.14],
+    ["2026-11-13", 162.85], ["2026-11-16", 156.14], ["2026-11-17", 155.46],
   ];
   const newsAt = tape.findIndex((row) => row[0] === "2026-11-05");
   const prices = tape.map((row) => row[1]);
@@ -100,12 +100,12 @@
     const room = Math.max(1, tape.length - 1 - split);
     simCache = [11, 29, 47, 71, 97].map((seed) => {
       const next = rand(split * 97 + seed * 13);
-      const drop = 30 + next() * 18;
+      const drop = 32 + next() * 20;
       let shock = 0;
       const pts = [[xOf(split), y0]];
       for (let i = split + 1; i < tape.length; i += 1) {
         const dist = (i - split) / room;
-        shock = shock * 0.86 + (next() - 0.5) * (4 + dist * 12);
+        shock = shock * 0.84 + (next() - 0.5) * (6 + dist * 16);
         const dev = drop * dist + shock;
         pts.push([xOf(i), y0 + dev]);
       }
@@ -293,31 +293,55 @@
   function render() {
     const bits = [];
     bits.push(bubble("user", t(
-      "如果黄仁勋出轨的传闻被爆出，我该怎么调整英伟达的仓位？",
-      "If a rumor says Jensen Huang had an affair, how should I change the Nvidia position?"
+      "如果黄仁勋出轨的传闻被爆出，我该怎么调整英伟达，以及其他芯片股？",
+      "If a rumor says Jensen Huang had an affair, how should I change Nvidia and the other chip names?"
     )));
-    if (index >= 1) {
+    if (index >= 0) {
       bits.push(bubble("bot", t(
-        "<b>研究和拆解</b><ul class='checks'><li><em>出轨</em><span>待核验</span></li><li><em>离职</em><span>待公告</span></li></ul><p>两件事先分开。用户这么说，还不等于事实。直接相关的名字是 NVDA。</p>",
-        "<b>Research</b><ul class='checks'><li><em>Affair</em><span>Unchecked</span></li><li><em>Departure</em><span>No filing</span></li></ul><p>The two claims stay apart. The user’s sentence is not a fact. The direct name is NVDA.</p>"
+        "<b>意图确认</b><ul class='checks'><li><em>出轨</em><span>待核验</span></li><li><em>离职</em><span>待公告</span></li></ul><p>先确认你要问的是仓位，不是把传闻写成事实。直接名字是 NVDA，还要看芯片同业和指数有没有一起动。</p>",
+        "<b>Intent</b><ul class='checks'><li><em>Affair</em><span>Unchecked</span></li><li><em>Departure</em><span>No filing</span></li></ul><p>The question is the book, not a verdict on the rumor. NVDA is the direct name. Peers and the index get checked too.</p>"
+      )));
+    }
+    if (index >= 1) {
+      bits.push(bubble("bot wide", t(
+        "<b>数据分析</b><p>2026-11-05 收盘到 2026-11-17 收盘。来源：Yahoo Finance 日线。</p><ul class='moves'><li><em>NVDA</em><s><b style='--w:58%'></b></s><span>-14.39%</span></li><li class='up'><em>AMD</em><s><b style='--w:98%'></b></s><span>+24.48%</span></li><li class='up'><em>AVGO</em><s><b style='--w:69%'></b></s><span>+17.17%</span></li><li class='up'><em>TSM</em><s><b style='--w:7%'></b></s><span>+1.87%</span></li><li><em>MSFT</em><s><b style='--w:22%'></b></s><span>-5.54%</span></li><li class='up'><em>QQQ</em><s><b style='--w:6%'></b></s><span>+1.53%</span></li><li class='up'><em>SOXX</em><s><b style='--w:29%'></b></s><span>+7.25%</span></li></ul><p>NVDA 在跌。AMD、AVGO、SOXX 这段是涨的。冲击没有均匀打到整个芯片篮子。</p>",
+        "<b>Data</b><p>Close on 2026-11-05 to close on 2026-11-17. Source: Yahoo Finance daily.</p><ul class='moves'><li><em>NVDA</em><s><b style='--w:58%'></b></s><span>-14.39%</span></li><li class='up'><em>AMD</em><s><b style='--w:98%'></b></s><span>+24.48%</span></li><li class='up'><em>AVGO</em><s><b style='--w:69%'></b></s><span>+17.17%</span></li><li class='up'><em>TSM</em><s><b style='--w:7%'></b></s><span>+1.87%</span></li><li><em>MSFT</em><s><b style='--w:22%'></b></s><span>-5.54%</span></li><li class='up'><em>QQQ</em><s><b style='--w:6%'></b></s><span>+1.53%</span></li><li class='up'><em>SOXX</em><s><b style='--w:29%'></b></s><span>+7.25%</span></li></ul><p>NVDA fell. AMD, AVGO and SOXX rose over the same days. The shock did not hit the whole chip basket together.</p>"
       )));
     }
     if (index >= 2) {
-      bits.push(bubble("bot wide", t(
-        "<b>构建和回测</b><p>假设这则传闻在 2026-11-05 进入。蓝线是当天作出的示意预测，白线是后来的真实收盘。</p><canvas id='tape' width='640' height='200' aria-label='NVDA 收盘与示意预测'></canvas><p class='fine' id='tape-tip'></p>",
-        "<b>Build and test</b><p>Suppose the rumor arrives on 2026-11-05. Blue is a sketch of the forecast from that day. White is the close that followed.</p><canvas id='tape' width='640' height='200' aria-label='NVDA close and a sketch forecast'></canvas><p class='fine' id='tape-tip'></p>"
+      bits.push(bubble("bot", t(
+        "<b>策略构建</b><div class='shift'><span>NVDA</span><b>30%</b><i></i><b>20%</b></div><div class='shift'><span>现金</span><b>15%</b><i></i><b>25%</b></div><p>演示账户。AMD、MSFT、QQQ 先留。不因为一则未核实传闻清掉整个芯片。</p>",
+        "<b>Strategy</b><div class='shift'><span>NVDA</span><b>30%</b><i></i><b>20%</b></div><div class='shift'><span>Cash</span><b>15%</b><i></i><b>25%</b></div><p>A demo book. AMD, MSFT and QQQ stay. One unchecked rumor does not clear the whole chip basket.</p>"
       )));
     }
     if (index >= 3) {
-      bits.push(bubble("bot", t(
-        "<b>人工确认</b><div class='shift'><span>NVDA</span><b>集中</b><i></i><b>降低</b></div><p>其余不动。现金留下。等你点头。</p><button type='button' disabled>连接到账户</button>",
-        "<b>Your confirmation</b><div class='shift'><span>NVDA</span><b>Concentrated</b><i></i><b>Smaller</b></div><p>The rest stays. Cash stays. Nothing runs until you agree.</p><button type='button' disabled>Connect an account</button>"
+      bits.push(bubble("bot wide", t(
+        "<b>仿真测试</b><p>假设传闻在 2026-11-05 进入。蓝线从这一天起往下张开，是示意预测。白线是后来的真实收盘，到 11 月 17 日 155.46。</p><canvas id='tape' width='640' height='200' aria-label='NVDA 收盘、示意预测与后来的真实走势'></canvas><p class='fine' id='tape-tip'></p><div class='cf'><p><span>不减仓</span><i style='--w:100%'></i><b>-14.39%</b></p><p><span>减半</span><i style='--w:51%'></i><b>-7.27%</b></p></div><p>两条都从 11/5 收盘出发。不减仓跟着后来的真实跌幅。减半是反事实：卖出的一半按假设滑点 15bp 成交。</p>",
+        "<b>Simulate</b><p>Suppose the rumor arrives on 2026-11-05. Blue opens downward from that day: a sketch forecast. White is the close that followed, 155.46 on Nov 17.</p><canvas id='tape' width='640' height='200' aria-label='NVDA close, sketch forecast, and the later real path'></canvas><p class='fine' id='tape-tip'></p><div class='cf'><p><span>Hold</span><i style='--w:100%'></i><b>-14.39%</b></p><p><span>Halve</span><i style='--w:51%'></i><b>-7.27%</b></p></div><p>Both start from the Nov 5 close. Holding follows the real decline. Halving is the counterfactual: the sold half pays an assumed 15bp of slippage.</p>"
       )));
     }
     if (index >= 4) {
       bits.push(bubble("bot", t(
-        "<b>执行和复盘</b><p>账户还没连上。确认之后才写模拟订单，再用后来的收盘对照当时的蓝线。</p>",
-        "<b>Execute and review</b><p>The account is still disconnected. A paper order comes only after you confirm, then the later closes are set against that blue sketch.</p>"
+        "<b>风险揭示</b><div class='risks'><div><b>-14.39%</b><span>回撤 · 11/5 到 11/17 收盘</span></div><div><b>-5.47%</b><span>极端日 · 11/10 NVDA</span></div><div><b>15bp</b><span>滑点 · 假设，不是实测成交</span></div><div><b>带往下张开</b><span>示意置信 · 不是模型打分</span></div></div><p>直接敞口高。同业没有一起跌，所以风险先落在 NVDA，不落在整个芯片篮子。</p>",
+        "<b>Risk</b><div class='risks'><div><b>-14.39%</b><span>Drawdown · Nov 5 to Nov 17 close</span></div><div><b>-5.47%</b><span>Worst day · NVDA on Nov 10</span></div><div><b>15bp</b><span>Slippage · assumed, not a fill</span></div><div><b>Band opens down</b><span>Sketch confidence · not a model score</span></div></div><p>The direct exposure is high. Peers did not fall together, so the risk sits on NVDA, not on the whole chip basket.</p>"
+      )));
+    }
+    if (index >= 5) {
+      bits.push(bubble("bot", t(
+        "<b>人工确认</b><div class='shift'><span>NVDA</span><b>集中</b><i></i><b>降低</b></div><p>其余不动。等你点头。账户还没连上。</p><button type='button' disabled>连接到账户</button>",
+        "<b>Your confirmation</b><div class='shift'><span>NVDA</span><b>Concentrated</b><i></i><b>Smaller</b></div><p>The rest stays. Nothing runs until you agree. The account is still disconnected.</p><button type='button' disabled>Connect an account</button>"
+      )));
+    }
+    if (index >= 6) {
+      bits.push(bubble("bot", t(
+        "<b>实际执行</b><p>确认之后才写模拟卖单：减 NVDA，现金留下。没有券商连接，单不会送出。</p>",
+        "<b>Execute</b><p>A paper sell is written only after you confirm: trim NVDA, keep the cash. No broker is connected, so the order is not sent.</p>"
+      )));
+    }
+    if (index >= 7) {
+      bits.push(bubble("bot", t(
+        "<b>持续复盘</b><p>11/17 收盘 NVDA 155.46。用后来的真实收盘对照蓝线和两条反事实。这一轮记下来，下一圈按目标再学。</p>",
+        "<b>Review</b><p>NVDA closed at 155.46 on Nov 17. Set that later close against the blue band and the two counterfactuals. This round is kept, and the next loop learns from the objective.</p>"
       )));
     }
     chat.replaceChildren(...bits);
@@ -342,7 +366,7 @@
     if (pause) {
       window.clearInterval(timer);
       timer = 0;
-      if (next >= 2) {
+      if (next >= 3) {
         chartGen += 1;
         chartDone = true;
         chartPlaying = false;
@@ -375,7 +399,7 @@
         return;
       }
       show(index + 1, false);
-    }, 1700);
+    }, 1800);
   }
 
   replay.addEventListener("click", play);
